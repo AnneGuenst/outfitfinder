@@ -100,9 +100,17 @@
   .intro p {
     color: var(--text-muted);
     font-size: 0.95rem;
-    max-width: 480px;
-    margin: 0 auto;
+    max-width: 520px;
+    margin: 0 auto 12px;
   }
+  .intro p:last-child { margin-bottom: 0; }
+  .intro a {
+    color: var(--brown);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    font-weight: 400;
+  }
+  .intro a:hover { opacity: 0.75; }
 
   /* ── STEP BLOCKS ── */
   .step-block {
@@ -679,7 +687,8 @@
     <div class="intro">
       <div class="intro-tag">Outfit-Beratung</div>
       <h2>Findet eure<br>perfekten Shooting-Outfits</h2>
-      <p>Beantwortet vier kurze Fragen und erhaltet passende Outfit-Empfehlungen aus deutschen Online-Shops – abgestimmt auf eure Farbpalette, euren Stil und euer Budget.</p>
+      <p>Nicht immer werden alle Shooting-Teilnehmer in meinem <a href="https://www.anneguenst.de/kleiderschrank" target="_blank" rel="noopener">Kleiderschrank</a> fündig – damit ich euch bei der Suche nach dem perfekten Outfit nicht allein lasse, habe ich diesen Finder entwickelt.</p>
+      <p>Gebt eure Wünsche ein und erhaltet passende Empfehlungen aus deutschen Online-Shops. Ihr könnt die Kleidung dort direkt erwerben – oder mich vorab kontaktieren: Ich helfe gerne dabei, passende Stücke zu organisieren, auch wenn sie noch nicht in meinem Kleiderschrank zu finden sind.</p>
     </div>
 
     <!-- Step 1: Palette -->
