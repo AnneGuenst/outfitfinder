@@ -1268,53 +1268,21 @@ async function startOnlineSearch() {
   }
 }
 
-function buildSearchPrompt() {
-  const paletteDesc = selectedPalette.name + ' (' + selectedPalette.keywords.slice(0, 4).join(', ') + ')';
-  const styleDesc = selectedStyle.name;
-  const budget = selectedBudget;
-  const personsDesc = persons.map(p => `${p.type} Größe ${p.size}`).join(', ');
+// ── SHOP URL BUILDER ──
+const SHOPS = {
+  zalando:  { name: 'Zalando',   buildUrl: (t,sz,g) => 'https://www.zalando.de/'+(g==='male'?'herren':g==='kids'?'kinder':'damen')+'/?q='+encodeURIComponent(t.join(' ')) },
+  aboutyou: { name: 'About You', buildUrl: (t,sz,g) => 'https://www.aboutyou.de/'+(g==='male'?'herren':g==='kids'?'kinder':'damen')+'/suche?term='+encodeURIComponent(t.join(' ')) },
+  hm:       { name: 'H&M',       buildUrl: (t,sz,g) => 'https://www2.hm.com/de_de/'+(g==='male'?'herren':g==='kids'?'kinder':'damen')+'/suche.html?q='+encodeURIComponent(t.join(' ')) },
+  zara:     { name: 'Zara',      buildUrl: (t,sz,g) => 'https://www.zara.com/de/de/search?searchTerm='+encodeURIComponent(t.join(' ')) },
+  mango:    { name: 'Mango',     buildUrl: (t,sz,g) => 'https://shop.mango.com/de/suche?q='+encodeURIComponent(t.join(' ')) },
+};
+const SHOP_KEYS = ['zalando','aboutyou','hm','zara','mango'];
+const PERSON_ICONS_MAP = {Mama:'\u{1F469}',Papa:'\u{1F468}',Kind:'\u{1F9D2}',Schwanger:'\u{1F930}',Baby:'\u{1F476}'};
 
-  return `Du bist ein Outfit-Berater für professionelle Foto-Shootings mit Familien.
-Finde für jede Person ein konkretes, kaufbares Outfit aus DACH-Shops (Zalando, H&M, Zara, C&A, About You, Mango, s.Oliver, EDITED, hessnatur, Amara, Depot oder ähnliche deutsche/österreichische/schweizer Onlineshops).
-
-Parameter:
-- Farbpalette: ${paletteDesc}
-- Stil: ${styleDesc}
-- Budget pro Person: bis ${budget}€
-- Personen: ${personsDesc}
-
-Wichtig für Foto-Shootings:
-- Keine Logos, Schriftzüge oder kleinteilige Muster
-- Kein reines Schwarz
-- Harmonisch abgestimmt als Gruppe
-- Leichte Stoffe, fließend wenn möglich
-- Zur Farbpalette passend
-
-Antworte NUR mit einem JSON-Objekt in diesem genauen Format (kein Markdown, kein Erklärungstext):
-{
-  "outfits": [
-    {
-      "person": "Mama",
-      "icon": "👩",
-      "size": "M",
-      "items": [
-        {
-          "type": "Kleid",
-          "icon": "👗",
-          "name": "Konkreter Produktname",
-          "shop": "Zalando",
-          "url": "https://www.zalando.de/suche?q=leinenkleid+creme+damen",
-          "priceApprox": "49"
-        }
-      ]
-    }
-  ],
-  "tips": [
-    "Tipp 1 zur harmonischen Farbabstimmung",
-    "Tipp 2 zu Stoffen und Materialien",
-    "Tipp 3 zu Accessoires"
-  ]
-}`;
+function personToGender(type) {
+  if (type === 'Papa') return 'male';
+  if (type === 'Kind' || type === 'Baby') return 'kids';
+  return 'female';
 }
 
 function renderOnlineResults(data) {
@@ -1323,36 +1291,45 @@ function renderOnlineResults(data) {
     resultsDiv.innerHTML = '<div class="error-note">Keine Ergebnisse gefunden. Bitte versuche es erneut.</div>';
     return;
   }
-
-  resultsDiv.innerHTML = data.outfits.map((outfit, i) => `
-    <div class="person-outfit-card" style="animation-delay:${i * 0.1}s">
-      <div class="person-outfit-header">
-        <div class="person-avatar">${outfit.icon || '👤'}</div>
-        <div>
-          <div class="person-outfit-name">${outfit.person}</div>
-          <div class="person-outfit-size">Größe ${outfit.size}</div>
-        </div>
-      </div>
-      <div class="outfit-items">
-        ${(outfit.items || []).map(item => `
-          <div class="outfit-item">
-            <div class="outfit-item-icon">${item.icon || '👚'}</div>
-            <div class="outfit-item-text">
-              <div class="outfit-item-name">${item.name}</div>
-              <div class="outfit-item-shop">
-                ${item.url
-                  ? `<a href="${item.url}" target="_blank" rel="noopener">${item.shop} ↗</a>`
-                  : item.shop
-                }
-              </div>
-            </div>
-            <div class="outfit-item-price">ca. ${item.priceApprox} €</div>
-          </div>
-        `).join('')}
-      </div>
-    </div>
-  `).join('');
+  resultsDiv.innerHTML = data.outfits.map(function(outfit, i) {
+    const shopKey = SHOP_KEYS[i % SHOP_KEYS.length];
+    const shop = SHOPS[shopKey];
+    const gender = personToGender(outfit.person);
+    const icons = {Mama:'\u{1F469}',Papa:'\u{1F468}',Kind:'\u{1F9D2}',Schwanger:'\u{1F930}',Baby:'\u{1F476}'};
+    const personIcon = icons[outfit.person] || '\u{1F464}';
+    const itemsHtml = (outfit.items || []).map(function(item) {
+      const terms = Array.isArray(item.searchTerms) ? item.searchTerms : [item.label || item.type];
+      const url = shop.buildUrl(terms, outfit.size, gender);
+      return '<div class="outfit-item">'
+        + '<div class="outfit-item-icon">' + (item.icon || '\u{1F455}') + '</div>'
+        + '<div class="outfit-item-text">'
+        + '<div class="outfit-item-name">' + (item.label || item.name || item.type) + '</div>'
+        + '<div class="outfit-item-shop"><a href="' + url + '" target="_blank" rel="noopener">Bei ' + shop.name + ' suchen \u2197</a></div>'
+        + '</div>'
+        + '<div class="outfit-item-price">ca. ' + item.priceApprox + ' \u20AC</div>'
+        + '</div>';
+    }).join('');
+    return '<div class="person-outfit-card" style="animation-delay:' + (i*0.1) + 's">'
+      + '<div class="person-outfit-header">'
+      + '<div class="person-avatar">' + personIcon + '</div>'
+      + '<div><div class="person-outfit-name">' + outfit.person + '</div>'
+      + '<div class="person-outfit-size">Gr\u00F6\u00DFe ' + outfit.size + ' \u00B7 empfohlen bei ' + shop.name + '</div></div>'
+      + '</div>'
+      + '<div class="outfit-items">' + itemsHtml + '</div>'
+      + '</div>';
+  }).join('');
 }
+
+function buildSearchPrompt() {
+  const paletteDesc = selectedPalette.name + ' (' + selectedPalette.keywords.slice(0, 4).join(', ') + ')';
+  const styleDesc = selectedStyle.name;
+  const budget = selectedBudget;
+  const personsDesc = persons.map(function(p) { return p.type + ' Groesse ' + p.size; }).join(', ');
+  return 'Du bist ein Outfit-Berater fuer professionelle Foto-Shootings mit Familien. Erstelle fuer jede Person einen kompletten Outfit-Vorschlag.\n\nParameter:\n- Farbpalette: ' + paletteDesc + '\n- Stil: ' + styleDesc + '\n- Budget pro Person: bis ' + budget + ' Euro\n- Personen: ' + personsDesc + '\n\nRegeln: Keine Logos oder Schriftzuege, kein reines Schwarz, harmonisch abgestimmt, leichte fliesende Stoffe, Farben aus der Palette.\n\nFuer jedes Kleidungsstueck gib searchTerms als Array mit 2-4 deutschen Suchbegriffen an (keine Markennamen). Beispiel: ["leinenkleid","creme"] oder ["strickpullover","beige"].\n\nAntworte NUR mit diesem JSON ohne Text oder Codeblock davor oder danach:\n{"outfits":[{"person":"Mama","size":"M","items":[{"type":"Kleid","icon":"\u{1F457}","label":"Fliessendes Leinenkleid Creme","searchTerms":["leinenkleid","creme"],"priceApprox":"49"}]}],"tips":["Tipp 1","Tipp 2","Tipp 3"]}';
+}`;
+}
+
+
 
 function showTips(tips) {
   if (!tips || tips.length === 0) return;
