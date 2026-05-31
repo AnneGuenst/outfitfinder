@@ -36,49 +36,30 @@
 
   /* ── HEADER ── */
   header {
-    background: var(--white);
-    border-bottom: 1px solid var(--border);
-    padding: 28px 40px;
+    background: var(--beige-light);
+    padding: 44px 40px 0;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 16px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 1px 12px rgba(162,106,37,0.06);
   }
-  .logo-circle {
-    width: 44px; height: 44px;
-    background: var(--brown);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    color: white;
-    font-family: 'Fraunces', serif;
-    font-size: 18px;
-    flex-shrink: 0;
-  }
-  header h1 {
-    font-family: 'Fraunces', serif;
-    font-weight: 400;
-    font-size: 1.15rem;
-    color: var(--text);
-    letter-spacing: 0.02em;
-  }
-  header span {
-    font-family: 'Jost', sans-serif;
-    font-weight: 300;
-    font-size: 0.8rem;
-    color: var(--text-muted);
+  .logo-img {
+    height: 52px;
+    width: auto;
     display: block;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    opacity: 0.9;
+  }
+  .header-divider {
+    width: 1px;
+    height: 36px;
+    background: var(--border);
+    margin: 20px auto 0;
   }
 
   /* ── MAIN CONTAINER ── */
   .container {
     max-width: 760px;
     margin: 0 auto;
-    padding: 60px 24px 100px;
+    padding: 40px 24px 100px;
   }
 
   /* ── PAGE SECTIONS ── */
@@ -687,11 +668,8 @@
 <body>
 
 <header>
-  <div class="logo-circle">A</div>
-  <div>
-    <h1>Anne Günst Fotografie</h1>
-    <span>Outfit-Finder für dein Shooting</span>
-  </div>
+  <img class="logo-img" src="https://images.squarespace-cdn.com/content/5c2e0c9a12b13fcbf149aa2c/70d67b85-3b85-41a1-af99-6f7cad798757/Logoschwarz.png?content-type=image%2Fpng" alt="Anne Günst Fotografie">
+  <div class="header-divider"></div>
 </header>
 
 <!-- ═══ PAGE 1: INPUT ═══ -->
@@ -701,7 +679,7 @@
     <div class="intro">
       <div class="intro-tag">Outfit-Beratung</div>
       <h2>Findet eure<br>perfekten Shooting-Outfits</h2>
-      <p>Beantwortet vier kurze Fragen – ich durchsuche zuerst meinen Kleiderschrank und finde dann passende Outfits für euch.</p>
+      <p>Beantwortet vier kurze Fragen und erhaltet passende Outfit-Empfehlungen aus deutschen Online-Shops – abgestimmt auf eure Farbpalette, euren Stil und euer Budget.</p>
     </div>
 
     <!-- Step 1: Palette -->
@@ -1147,18 +1125,10 @@ function findOutfits() {
   document.getElementById('page-input').classList.remove('active');
   document.getElementById('page-results').classList.add('active');
   window.scrollTo(0, 0);
-
-  // Search wardrobe
-  const matched = searchWardrobe();
-  if (matched.length > 0) {
-    showWardrobeResults(matched);
-    document.getElementById('online-trigger-section').style.display = '';
-  } else {
-    // No wardrobe match – start online search directly
-    document.getElementById('wardrobe-section').style.display = 'none';
-    document.getElementById('online-trigger-section').style.display = 'none';
-    startOnlineSearch();
-  }
+  // Skip wardrobe – go straight to online search
+  document.getElementById('wardrobe-section').style.display = 'none';
+  document.getElementById('online-trigger-section').style.display = 'none';
+  startOnlineSearch();
 }
 
 function searchWardrobe() {
@@ -1242,7 +1212,7 @@ async function startOnlineSearch() {
 
   try {
     const prompt = buildSearchPrompt();
-    const response = await fetch('/api/chat', {
+    const response = await fetch('/chat', {
       method: 'POST',
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
