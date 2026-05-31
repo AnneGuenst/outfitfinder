@@ -1,0 +1,1448 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Outfit-Finder – Anne Günst Fotografie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --brown: #a26a25;
+    --brown-light: #c4924d;
+    --beige-warm: #ebe7e2;
+    --beige-light: #f5f1ec;
+    --white: #ffffff;
+    --text: #2c2218;
+    --text-muted: #7a6a57;
+    --border: #ddd5c8;
+    --shadow: 0 2px 20px rgba(162,106,37,0.08);
+    --shadow-hover: 0 8px 40px rgba(162,106,37,0.15);
+    --radius: 12px;
+    --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    background: var(--beige-light);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.7;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 28px 40px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 1px 12px rgba(162,106,37,0.06);
+  }
+  .logo-circle {
+    width: 44px; height: 44px;
+    background: var(--brown);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: white;
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  header h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 1.15rem;
+    color: var(--text);
+    letter-spacing: 0.02em;
+  }
+  header span {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    display: block;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ── MAIN CONTAINER ── */
+  .container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 60px 24px 100px;
+  }
+
+  /* ── PAGE SECTIONS ── */
+  .page { display: none; animation: fadeUp 0.5s ease both; }
+  .page.active { display: block; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── INTRO ── */
+  .intro {
+    text-align: center;
+    margin-bottom: 56px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--border);
+  }
+  .intro-tag {
+    display: inline-block;
+    background: var(--beige-warm);
+    color: var(--brown);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+  .intro h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 2.2rem;
+    line-height: 1.25;
+    color: var(--text);
+    margin-bottom: 14px;
+    letter-spacing: -0.01em;
+  }
+  .intro p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  /* ── STEP BLOCKS ── */
+  .step-block {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px 36px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+    transition: box-shadow var(--transition);
+  }
+  .step-block:hover { box-shadow: var(--shadow-hover); }
+
+  .step-label {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+  .step-num {
+    width: 32px; height: 32px;
+    background: var(--brown);
+    color: white;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.78rem;
+    font-weight: 500;
+    flex-shrink: 0;
+    letter-spacing: 0.02em;
+  }
+  .step-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 1.1rem;
+    color: var(--text);
+    letter-spacing: 0.01em;
+  }
+
+  /* ── COLOR PALETTE ── */
+  .palette-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 12px;
+  }
+  .palette-card {
+    border: 2px solid transparent;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all var(--transition);
+    background: var(--white);
+  }
+  .palette-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+  .palette-card.selected {
+    border-color: var(--brown);
+    box-shadow: 0 0 0 3px rgba(162,106,37,0.15);
+  }
+  .palette-swatch {
+    height: 64px;
+    display: flex;
+  }
+  .palette-swatch div { flex: 1; }
+  .palette-label {
+    padding: 10px 10px;
+    font-size: 0.78rem;
+    color: var(--text);
+    text-align: center;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    line-height: 1.4;
+  }
+  .palette-label strong {
+    display: block;
+    font-weight: 500;
+    font-size: 0.8rem;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+  .palette-label span {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    letter-spacing: 0.02em;
+  }
+
+  /* ── STYLE SELECTOR ── */
+  .style-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+  }
+  .style-card {
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 14px;
+    cursor: pointer;
+    transition: all var(--transition);
+    text-align: center;
+    background: var(--white);
+  }
+  .style-card:hover { border-color: var(--brown-light); transform: translateY(-2px); }
+  .style-card.selected {
+    border-color: var(--brown);
+    background: rgba(162,106,37,0.04);
+  }
+  .style-icon { width: 44px; height: 44px; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; }
+  .style-icon svg { width: 36px; height: 36px; stroke: var(--text); fill: none; stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; transition: stroke var(--transition); }
+  .style-card.selected .style-icon svg, .style-card:hover .style-icon svg { stroke: var(--brown); }
+  .style-name {
+    font-size: 0.82rem;
+    font-weight: 400;
+    color: var(--text);
+    letter-spacing: 0.03em;
+  }
+  .style-desc {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+    line-height: 1.35;
+    letter-spacing: 0.02em;
+  }
+
+  /* ── BUDGET ── */
+  .budget-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+  .budget-btn {
+    border: 2px solid var(--border);
+    background: var(--white);
+    border-radius: 8px;
+    padding: 14px 8px;
+    cursor: pointer;
+    transition: all var(--transition);
+    text-align: center;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+  .budget-btn:hover { border-color: var(--brown-light); color: var(--text); }
+  .budget-btn.selected {
+    border-color: var(--brown);
+    background: rgba(162,106,37,0.06);
+    color: var(--brown);
+    font-weight: 500;
+  }
+  .budget-amount {
+    font-family: 'Fraunces', serif;
+    font-size: 1.1rem;
+    font-weight: 400;
+    display: block;
+    margin-bottom: 2px;
+    color: var(--text);
+  }
+  .budget-btn.selected .budget-amount { color: var(--brown); }
+
+  /* ── PERSONS ── */
+  .person-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+  .person-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--beige-light);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    animation: fadeUp 0.3s ease both;
+  }
+  .person-type-badge {
+    background: var(--beige-warm);
+    color: var(--brown);
+    font-size: 0.75rem;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+  .person-row .size-label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-left: auto;
+    margin-right: 6px;
+  }
+  .size-select {
+    border: 1px solid var(--border);
+    background: var(--white);
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.82rem;
+    color: var(--text);
+    cursor: pointer;
+    outline: none;
+  }
+  .remove-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 1rem;
+    padding: 4px;
+    border-radius: 4px;
+    transition: color var(--transition);
+    line-height: 1;
+  }
+  .remove-btn:hover { color: #c0392b; }
+
+  .add-person-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .add-person-btn {
+    border: 1px dashed var(--border);
+    background: transparent;
+    border-radius: 8px;
+    padding: 9px 16px;
+    cursor: pointer;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    font-weight: 300;
+    transition: all var(--transition);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .add-person-btn:hover {
+    border-color: var(--brown);
+    color: var(--brown);
+    background: rgba(162,106,37,0.03);
+  }
+
+  /* ── MAIN BUTTON ── */
+  .btn-primary {
+    width: 100%;
+    background: var(--brown);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 18px 32px;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all var(--transition);
+    margin-top: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-primary::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity var(--transition);
+  }
+  .btn-primary:hover { background: #8a5a1e; transform: translateY(-1px); box-shadow: 0 8px 30px rgba(162,106,37,0.3); }
+  .btn-primary:hover::before { opacity: 1; }
+  .btn-primary:active { transform: translateY(0); }
+  .btn-primary:disabled { background: var(--border); color: var(--text-muted); cursor: not-allowed; transform: none; box-shadow: none; }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--brown);
+    border: 1.5px solid var(--brown);
+    border-radius: 10px;
+    padding: 14px 28px;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all var(--transition);
+  }
+  .btn-secondary:hover { background: rgba(162,106,37,0.06); }
+
+  /* ── RESULTS PAGE ── */
+  .results-header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  .results-header h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 2rem;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+  .results-header p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+
+  /* Section Titles */
+  .section-heading {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .section-heading h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 1.3rem;
+    color: var(--text);
+  }
+  .section-heading .line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* Wardrobe Section */
+  #wardrobe-section { margin-bottom: 40px; }
+  .wardrobe-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 16px;
+  }
+  .wardrobe-item {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: all var(--transition);
+    animation: fadeUp 0.4s ease both;
+  }
+  .wardrobe-item:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+  .wardrobe-item img {
+    width: 100%;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+    display: block;
+  }
+  .wardrobe-item-info {
+    padding: 12px 14px;
+  }
+  .wardrobe-item-label {
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .wardrobe-item-meta {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .tag {
+    background: var(--beige-warm);
+    color: var(--brown);
+    font-size: 0.68rem;
+    padding: 2px 8px;
+    border-radius: 12px;
+    letter-spacing: 0.04em;
+  }
+  .person-match {
+    background: rgba(162,106,37,0.08);
+    color: var(--brown);
+    font-size: 0.68rem;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-weight: 500;
+  }
+
+  /* Online Outfits */
+  #online-section { margin-bottom: 40px; }
+  .online-divider {
+    text-align: center;
+    margin: 32px 0;
+    position: relative;
+  }
+  .online-divider::before {
+    content: '';
+    position: absolute;
+    left: 0; right: 0;
+    top: 50%;
+    height: 1px;
+    background: var(--border);
+  }
+  #btn-online-search {
+    position: relative;
+    width: auto;
+    margin: 0 auto;
+    display: block;
+    padding: 16px 40px;
+  }
+
+  .person-outfit-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+    animation: fadeUp 0.4s ease both;
+  }
+  .person-outfit-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .person-avatar {
+    width: 40px; height: 40px;
+    background: var(--beige-warm);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+  .person-outfit-name {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 1rem;
+    color: var(--text);
+  }
+  .person-outfit-size {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+  .outfit-items { display: flex; flex-direction: column; gap: 10px; }
+  .outfit-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--beige-light);
+  }
+  .outfit-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .outfit-item-icon {
+    width: 36px; height: 36px;
+    background: var(--beige-light);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+  .outfit-item-text { flex: 1; }
+  .outfit-item-name {
+    font-size: 0.88rem;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+  .outfit-item-shop {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+  .outfit-item-shop a {
+    color: var(--brown);
+    text-decoration: none;
+    font-weight: 400;
+  }
+  .outfit-item-shop a:hover { text-decoration: underline; }
+  .outfit-item-price {
+    font-family: 'Fraunces', serif;
+    font-size: 0.9rem;
+    color: var(--brown);
+    font-weight: 400;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* Loading */
+  .loading-state {
+    text-align: center;
+    padding: 40px 20px;
+  }
+  .spinner {
+    width: 36px; height: 36px;
+    border: 2.5px solid var(--border);
+    border-top-color: var(--brown);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 16px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-state p {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  /* Styling Tips */
+  #tips-section {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px 36px;
+    margin-bottom: 32px;
+    box-shadow: var(--shadow);
+  }
+  .tips-grid { display: flex; flex-direction: column; gap: 16px; margin-top: 20px; }
+  .tip-item {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .tip-icon {
+    width: 36px; height: 36px;
+    background: var(--beige-warm);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .tip-text { font-size: 0.88rem; color: var(--text-muted); line-height: 1.65; }
+  .tip-text strong { color: var(--text); font-weight: 500; }
+
+  /* Action Buttons */
+  .action-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .action-buttons .btn-secondary {
+    flex: 1;
+    min-width: 160px;
+    text-align: center;
+  }
+
+  /* Error */
+  .error-note {
+    background: #fdf0e8;
+    border: 1px solid #f0c89e;
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-size: 0.84rem;
+    color: #8a4a10;
+    margin-top: 12px;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--beige-light); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  @media (max-width: 600px) {
+    .container { padding: 32px 16px 80px; }
+    header { padding: 20px 20px; }
+    .step-block { padding: 24px 20px; }
+    .budget-grid { grid-template-columns: repeat(2, 1fr); }
+    .palette-grid { grid-template-columns: repeat(2, 1fr); }
+    .style-grid { grid-template-columns: repeat(2, 1fr); }
+    .person-outfit-card { padding: 20px 18px; }
+    #tips-section { padding: 24px 20px; }
+    .action-buttons { flex-direction: column; }
+    .action-buttons .btn-secondary { min-width: auto; }
+    .intro h2 { font-size: 1.7rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-circle">A</div>
+  <div>
+    <h1>Anne Günst Fotografie</h1>
+    <span>Outfit-Finder für dein Shooting</span>
+  </div>
+</header>
+
+<!-- ═══ PAGE 1: INPUT ═══ -->
+<div class="page active" id="page-input">
+  <div class="container">
+
+    <div class="intro">
+      <div class="intro-tag">Outfit-Beratung</div>
+      <h2>Findet eure<br>perfekten Shooting-Outfits</h2>
+      <p>Beantwortet vier kurze Fragen – ich durchsuche zuerst meinen Kleiderschrank und finde dann passende Outfits für euch.</p>
+    </div>
+
+    <!-- Step 1: Palette -->
+    <div class="step-block">
+      <div class="step-label">
+        <div class="step-num">1</div>
+        <div class="step-title">Farbpalette wählen</div>
+      </div>
+      <div class="palette-grid" id="palette-grid">
+        <!-- Filled by JS -->
+      </div>
+    </div>
+
+    <!-- Step 2: Style -->
+    <div class="step-block">
+      <div class="step-label">
+        <div class="step-num">2</div>
+        <div class="step-title">Stilrichtung wählen</div>
+      </div>
+      <div class="style-grid" id="style-grid">
+        <!-- Filled by JS -->
+      </div>
+    </div>
+
+    <!-- Step 3: Budget -->
+    <div class="step-block">
+      <div class="step-label">
+        <div class="step-num">3</div>
+        <div class="step-title">Budget pro Person</div>
+      </div>
+      <div class="budget-grid" id="budget-grid">
+        <button class="budget-btn" data-val="30" onclick="selectBudget(this)">
+          <span class="budget-amount">bis 30 €</span>erschwinglich
+        </button>
+        <button class="budget-btn" data-val="50" onclick="selectBudget(this)">
+          <span class="budget-amount">bis 50 €</span>komfortabel
+        </button>
+        <button class="budget-btn" data-val="100" onclick="selectBudget(this)">
+          <span class="budget-amount">bis 100 €</span>großzügig
+        </button>
+        <button class="budget-btn" data-val="200" onclick="selectBudget(this)">
+          <span class="budget-amount">bis 200 €</span>premium
+        </button>
+      </div>
+    </div>
+
+    <!-- Step 4: Persons -->
+    <div class="step-block">
+      <div class="step-label">
+        <div class="step-num">4</div>
+        <div class="step-title">Personen hinzufügen</div>
+      </div>
+      <div class="person-list" id="person-list"></div>
+      <div class="add-person-row">
+        <button class="add-person-btn" onclick="addPerson('Mama')">+ Mama</button>
+        <button class="add-person-btn" onclick="addPerson('Papa')">+ Papa</button>
+        <button class="add-person-btn" onclick="addPerson('Kind')">+ Kind</button>
+        <button class="add-person-btn" onclick="addPerson('Schwanger')">+ Schwanger</button>
+        <button class="add-person-btn" onclick="addPerson('Baby')">+ Baby</button>
+      </div>
+    </div>
+
+    <button class="btn-primary" id="btn-find" onclick="findOutfits()" disabled>
+      Outfits finden
+    </button>
+
+  </div>
+</div>
+
+<!-- ═══ PAGE 2: RESULTS ═══ -->
+<div class="page" id="page-results">
+  <div class="container">
+
+    <div class="results-header">
+      <h2>Eure Outfit-Empfehlungen</h2>
+      <p>Abgestimmt auf eure Farbpalette und euren Stil</p>
+    </div>
+
+    <!-- Kleiderschrank Section -->
+    <div id="wardrobe-section" style="display:none;">
+      <div class="section-heading">
+        <h3>Kundenkleiderschrank</h3>
+        <div class="line"></div>
+      </div>
+      <div class="wardrobe-grid" id="wardrobe-grid"></div>
+    </div>
+
+    <!-- Online Search Trigger -->
+    <div id="online-trigger-section">
+      <div class="online-divider">
+        <button class="btn-primary" id="btn-online-search" onclick="startOnlineSearch()">
+          Weiter zur Internetsuche
+        </button>
+      </div>
+    </div>
+
+    <!-- Online Results -->
+    <div id="online-section" style="display:none;">
+      <div class="section-heading">
+        <h3>Online-Empfehlungen</h3>
+        <div class="line"></div>
+      </div>
+      <div id="online-results"></div>
+    </div>
+
+    <!-- Styling Tips -->
+    <div id="tips-section" style="display:none;">
+      <div class="section-heading" style="margin-bottom:0;">
+        <h3>Styling-Tipps für euer Shooting</h3>
+        <div class="line"></div>
+      </div>
+      <div class="tips-grid" id="tips-grid"></div>
+    </div>
+
+    <!-- Actions -->
+    <div id="action-section" style="display:none; margin-top: 32px;">
+      <div class="action-buttons">
+        <button class="btn-secondary" onclick="copyResults()">📋 Ergebnisse kopieren</button>
+        <button class="btn-secondary" onclick="printAsPDF()">📄 Als PDF speichern</button>
+        <button class="btn-secondary" onclick="goBack()">← Neue Suche</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ═══ DATA ═══
+
+const PALETTES = [
+  {
+    id: 'natural-cream',
+    name: 'Natural Cream',
+    subtitle: 'Creme · Elfenbein · Sand · helles Beige',
+    colors: ['#F7F1E7', '#EDE2D2', '#D8C4AA', '#CBB79E', '#BFA78B'],
+    keywords: ['creme', 'elfenbein', 'sand', 'beige', 'hafer', 'off-white', 'hell', 'natur', 'weiß']
+  },
+  {
+    id: 'warm-earth',
+    name: 'Warm Earth',
+    subtitle: 'Karamell · Cognac · Rost · Schoko',
+    colors: ['#D8B083', '#B8774A', '#A65332', '#7B4A32', '#4A3128'],
+    keywords: ['karamell', 'cognac', 'rost', 'braun', 'schoko', 'terracotta', 'erdfarben', 'kupfer', 'herbst']
+  },
+  {
+    id: 'soft-blush',
+    name: 'Soft Blush',
+    subtitle: 'Nude · Puder · Altrosa · Mauve',
+    colors: ['#E8D3C6', '#DDB7A8', '#C99688', '#A87976', '#7C565B'],
+    keywords: ['nude', 'puder', 'altrosa', 'rose', 'mauve', 'lachs', 'puderrosa', 'blush', 'feminin']
+  },
+  {
+    id: 'boho-neutral',
+    name: 'Boho Neutral',
+    subtitle: 'Creme · Leinen · Taupe · Greige',
+    colors: ['#F4EDE4', '#DED0BE', '#C1AC96', '#9D8977', '#7A6250'],
+    keywords: ['creme', 'leinen', 'taupe', 'greige', 'hellbraun', 'natur', 'beige', 'sandton', 'neutral']
+  },
+  {
+    id: 'sage-stone',
+    name: 'Sage & Stone',
+    subtitle: 'Salbei · Olivgrau · Steingrau · Moosgrün',
+    colors: ['#C8C9B4', '#9FA186', '#7B7C6A', '#EAE1D2', '#4F563F'],
+    keywords: ['salbei', 'olive', 'olivgrau', 'steingrau', 'moosgrün', 'grün', 'sage', 'khaki', 'natur']
+  },
+  {
+    id: 'soft-blue-sand',
+    name: 'Soft Blue & Sand',
+    subtitle: 'Staubblau · Jeansblau · Greige · Creme',
+    colors: ['#B8C5C8', '#8FA4AD', '#C7B9A6', '#EFE6D8', '#D2B896'],
+    keywords: ['blau', 'staubblau', 'jeansblau', 'hellblau', 'greige', 'creme', 'beige', 'sand', 'frisch']
+  },
+];
+
+const STYLE_SVGS = {
+  'clean-elegant': `<svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+    <!-- Elegant dress silhouette -->
+    <path d="M13 4 Q18 2 23 4 L25 12 Q22 11 18 11 Q14 11 11 12 Z"/>
+    <path d="M11 12 Q7 18 6 28 Q10 30 18 30 Q26 30 30 28 Q29 18 25 12"/>
+    <path d="M14 11 Q18 14 22 11"/>
+    <line x1="18" y1="2" x2="18" y2="4"/>
+  </svg>`,
+  'boho-natural': `<svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+    <!-- Leaf / botanical -->
+    <path d="M18 30 Q18 16 8 8 Q14 8 20 12 Q26 16 26 24 Q22 28 18 30Z"/>
+    <line x1="18" y1="30" x2="16" y2="14"/>
+    <path d="M16 22 Q12 20 10 16"/>
+    <path d="M17 18 Q13 17 11 13"/>
+    <line x1="18" y1="30" x2="18" y2="33"/>
+  </svg>`,
+  'romantic-feminine': `<svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+    <!-- Tulip / flower -->
+    <path d="M18 24 Q13 22 12 16 Q12 10 18 8 Q24 10 24 16 Q23 22 18 24Z"/>
+    <path d="M18 8 Q16 4 13 5 Q11 8 13 12"/>
+    <path d="M18 8 Q20 4 23 5 Q25 8 23 12"/>
+    <line x1="18" y1="24" x2="18" y2="32"/>
+    <path d="M14 30 Q18 28 22 30"/>
+  </svg>`,
+  'earth-outdoor': `<svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+    <!-- Mountain / landscape -->
+    <polyline points="3,28 12,12 18,20 22,14 33,28"/>
+    <line x1="2" y1="28" x2="34" y2="28"/>
+    <circle cx="27" cy="10" r="4"/>
+    <line x1="27" y1="6" x2="27" y2="4"/>
+    <line x1="31" y1="7" x2="33" y2="5"/>
+    <line x1="31" y1="10" x2="33" y2="10"/>
+  </svg>`,
+  'baby-kids': `<svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+    <!-- Baby onesie -->
+    <path d="M11 8 L8 14 L12 15 L12 28 L24 28 L24 15 L28 14 L25 8 Q22 12 18 12 Q14 12 11 8Z"/>
+    <circle cx="18" cy="6" r="3"/>
+    <line x1="16" y1="21" x2="20" y2="21"/>
+  </svg>`,
+  'family': `<svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+    <!-- Three figures: adult, adult, child -->
+    <circle cx="10" cy="9" r="3"/>
+    <line x1="10" y1="12" x2="10" y2="22"/>
+    <line x1="6" y1="16" x2="14" y2="16"/>
+    <line x1="10" y1="22" x2="7" y2="29"/>
+    <line x1="10" y1="22" x2="13" y2="29"/>
+    <circle cx="26" cy="9" r="3"/>
+    <line x1="26" y1="12" x2="26" y2="22"/>
+    <line x1="22" y1="16" x2="30" y2="16"/>
+    <line x1="26" y1="22" x2="23" y2="29"/>
+    <line x1="26" y1="22" x2="29" y2="29"/>
+    <circle cx="18" cy="14" r="2.2"/>
+    <line x1="18" y1="16.2" x2="18" y2="24"/>
+    <line x1="15" y1="19" x2="21" y2="19"/>
+    <line x1="18" y1="24" x2="16" y2="29"/>
+    <line x1="18" y1="24" x2="20" y2="29"/>
+  </svg>`,
+};
+
+const STYLES = [
+  { id: 'clean-elegant',     name: 'Clean & Elegant',           desc: 'Zeitlos, edel, ruhige Linien' },
+  { id: 'boho-natural',      name: 'Boho & Natürlich',          desc: 'Fließend, verspielt, naturnah' },
+  { id: 'romantic-feminine', name: 'Romantisch & Feminin',      desc: 'Zart, weich, ausdrucksstark' },
+  { id: 'earth-outdoor',     name: 'Erdtöne & Outdoor',         desc: 'Warm, emotional, herbstlich' },
+  { id: 'baby-kids',         name: 'Baby & Kinder',             desc: 'Weich, niedlich, unbeschwert' },
+  { id: 'family',            name: 'Looks für die ganze Familie', desc: 'Abgestimmt & harmonisch' },
+];
+
+// Anne Günst Kleiderschrank – repräsentative Auswahl
+// Da die Seite JS-basiert ist, nutzen wir bekannte Beispiel-Outfits des Studios
+const WARDROBE = [
+  {
+    id: 'w1',
+    label: 'Langes Leinenkleid',
+    color: 'Creme',
+    colorKey: ['creme', 'off-white', 'hell', 'natur', 'elfenbein'],
+    sizes: ['XS', 'S', 'M'],
+    persons: ['Mama', 'Schwanger'],
+    style: ['clean-elegant', 'boho-natural', 'romantic-feminine', 'family'],
+    image: 'https://images.squarespace-cdn.com/content/5c2e0c9a12b13fcbf149aa2c/d82f4115-76ce-456e-8cbc-a352b0945bf7/Kleiderschrank.png?content-type=image%2Fpng',
+    useFirstImage: true,
+  },
+  {
+    id: 'w2',
+    label: 'Creme Strickpullover',
+    color: 'Creme/Beige',
+    colorKey: ['creme', 'beige', 'off-white', 'natur', 'hell', 'elfenbein'],
+    sizes: ['S', 'M', 'L'],
+    persons: ['Mama', 'Papa', 'Schwanger'],
+    style: ['clean-elegant', 'family', 'earth-outdoor'],
+    image: null, icon: '🧶',
+  },
+  {
+    id: 'w3',
+    label: 'Rostfarbenes Maxikleid',
+    color: 'Rost/Terracotta',
+    colorKey: ['rost', 'terracotta', 'braun', 'erdfarben', 'karamell', 'cognac'],
+    sizes: ['XS', 'S', 'M'],
+    persons: ['Mama', 'Schwanger'],
+    style: ['boho-natural', 'romantic-feminine', 'earth-outdoor'],
+    image: null, icon: '👗',
+  },
+  {
+    id: 'w4',
+    label: 'Salbeigrünes Kleid',
+    color: 'Salbei',
+    colorKey: ['salbei', 'sage', 'hellgrün', 'natur', 'grünlich', 'olive'],
+    sizes: ['XS', 'S'],
+    persons: ['Mama'],
+    style: ['clean-elegant', 'boho-natural', 'romantic-feminine', 'family'],
+    image: null, icon: '🌿',
+  },
+  {
+    id: 'w5',
+    label: 'Hellbeige Cord-Overall',
+    color: 'Beige',
+    colorKey: ['beige', 'creme', 'sandton', 'hell', 'taupe'],
+    sizes: ['86', '92', '98', '104'],
+    persons: ['Kind'],
+    style: ['baby-kids', 'family', 'boho-natural'],
+    image: null, icon: '👶',
+  },
+  {
+    id: 'w6',
+    label: 'Nude Wickelkleid',
+    color: 'Nude/Altrosa',
+    colorKey: ['nude', 'altrosa', 'lachs', 'puderrosa', 'blush', 'puder'],
+    sizes: ['S', 'M'],
+    persons: ['Mama', 'Schwanger'],
+    style: ['clean-elegant', 'romantic-feminine'],
+    image: null, icon: '🌷',
+  },
+  {
+    id: 'w7',
+    label: 'Cognacfarbene Bluse',
+    color: 'Cognac',
+    colorKey: ['cognac', 'braun', 'karamell', 'erdfarben', 'rost'],
+    sizes: ['M', 'L'],
+    persons: ['Mama', 'Papa'],
+    style: ['earth-outdoor', 'boho-natural', 'family'],
+    image: null, icon: '👚',
+  },
+  {
+    id: 'w8',
+    label: 'Cremeweißes Baby-Set',
+    color: 'Creme/Weiß',
+    colorKey: ['creme', 'weiß', 'hell', 'off-white', 'elfenbein'],
+    sizes: ['50', '56', '62', '68'],
+    persons: ['Baby'],
+    style: ['baby-kids', 'family', 'clean-elegant', 'romantic-feminine'],
+    image: null, icon: '🍼',
+  },
+];
+
+// ═══ STATE ═══
+let selectedPalette = null;
+let selectedStyle = null;
+let selectedBudget = null;
+let persons = [];
+let personCounter = 0;
+
+// ═══ INIT ═══
+document.addEventListener('DOMContentLoaded', () => {
+  renderPalettes();
+  renderStyles();
+  updateFindBtn();
+});
+
+function renderPalettes() {
+  const grid = document.getElementById('palette-grid');
+  grid.innerHTML = PALETTES.map(p => `
+    <div class="palette-card" data-id="${p.id}" onclick="selectPalette('${p.id}', this)">
+      <div class="palette-swatch">
+        ${p.colors.map(c => `<div style="background:${c}"></div>`).join('')}
+      </div>
+      <div class="palette-label">
+        <strong>${p.name}</strong>
+        <span>${p.subtitle}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderStyles() {
+  const grid = document.getElementById('style-grid');
+  grid.innerHTML = STYLES.map(s => `
+    <div class="style-card" data-id="${s.id}" onclick="selectStyle('${s.id}', this)">
+      <div class="style-icon">${STYLE_SVGS[s.id] || ''}</div>
+      <div class="style-name">${s.name}</div>
+      <div class="style-desc">${s.desc}</div>
+    </div>
+  `).join('');
+}
+
+function selectPalette(id, el) {
+  document.querySelectorAll('.palette-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedPalette = PALETTES.find(p => p.id === id);
+  updateFindBtn();
+}
+
+function selectStyle(id, el) {
+  document.querySelectorAll('.style-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedStyle = STYLES.find(s => s.id === id);
+  updateFindBtn();
+}
+
+function selectBudget(btn) {
+  document.querySelectorAll('.budget-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  selectedBudget = parseInt(btn.dataset.val);
+  updateFindBtn();
+}
+
+function updateFindBtn() {
+  const btn = document.getElementById('btn-find');
+  btn.disabled = !(selectedPalette && selectedStyle && selectedBudget && persons.length > 0);
+}
+
+const PERSON_SIZES = {
+  'Mama': ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+  'Papa': ['S', 'M', 'L', 'XL', 'XXL'],
+  'Kind': ['86', '92', '98', '104', '110', '116', '122', '128', '134', '140', '146', '152'],
+  'Schwanger': ['S', 'M', 'L', 'XL'],
+  'Baby': ['50', '56', '62', '68', '74', '80'],
+};
+
+const PERSON_ICONS = {
+  'Mama': '👩', 'Papa': '👨', 'Kind': '🧒', 'Schwanger': '🤰', 'Baby': '👶'
+};
+
+function addPerson(type) {
+  personCounter++;
+  const id = `person-${personCounter}`;
+  persons.push({ id, type, size: PERSON_SIZES[type][1] || 'M' });
+  renderPersonList();
+  updateFindBtn();
+}
+
+function removePerson(id) {
+  persons = persons.filter(p => p.id !== id);
+  renderPersonList();
+  updateFindBtn();
+}
+
+function updatePersonSize(id, size) {
+  const p = persons.find(p => p.id === id);
+  if (p) p.size = size;
+}
+
+function renderPersonList() {
+  const list = document.getElementById('person-list');
+  list.innerHTML = persons.map(p => `
+    <div class="person-row" id="${p.id}-row">
+      <span style="font-size:1.2rem">${PERSON_ICONS[p.type] || '👤'}</span>
+      <span class="person-type-badge">${p.type}</span>
+      <span class="size-label">Größe:</span>
+      <select class="size-select" onchange="updatePersonSize('${p.id}', this.value)">
+        ${PERSON_SIZES[p.type].map(s => `<option value="${s}" ${s === p.size ? 'selected' : ''}>${s}</option>`).join('')}
+      </select>
+      <button class="remove-btn" onclick="removePerson('${p.id}')" title="Entfernen">✕</button>
+    </div>
+  `).join('');
+}
+
+// ═══ FIND OUTFITS ═══
+function findOutfits() {
+  document.getElementById('page-input').classList.remove('active');
+  document.getElementById('page-results').classList.add('active');
+  window.scrollTo(0, 0);
+
+  // Search wardrobe
+  const matched = searchWardrobe();
+  if (matched.length > 0) {
+    showWardrobeResults(matched);
+    document.getElementById('online-trigger-section').style.display = '';
+  } else {
+    // No wardrobe match – start online search directly
+    document.getElementById('wardrobe-section').style.display = 'none';
+    document.getElementById('online-trigger-section').style.display = 'none';
+    startOnlineSearch();
+  }
+}
+
+function searchWardrobe() {
+  const paletteKeys = selectedPalette.keywords;
+  const styleId = selectedStyle.id;
+  const personTypes = persons.map(p => p.type);
+  const personSizes = persons.reduce((acc, p) => { acc[p.type] = acc[p.type] || []; acc[p.type].push(p.size); return acc; }, {});
+
+  return WARDROBE.filter(item => {
+    const paletteMatch = item.colorKey.some(k => paletteKeys.includes(k));
+    const styleMatch = item.style.includes(styleId);
+    const personMatch = item.persons.some(pt => personTypes.includes(pt));
+    return paletteMatch && styleMatch && personMatch;
+  }).map(item => {
+    const matchedPersons = item.persons.filter(pt => personTypes.includes(pt));
+    const sizeOk = matchedPersons.some(pt => {
+      const needed = personSizes[pt] || [];
+      return needed.some(s => item.sizes.includes(s));
+    });
+    return { ...item, matchedPersons, sizeOk };
+  }).filter(item => item.matchedPersons.length > 0);
+}
+
+function showWardrobeResults(items) {
+  const section = document.getElementById('wardrobe-section');
+  const grid = document.getElementById('wardrobe-grid');
+  section.style.display = '';
+
+  grid.innerHTML = items.map((item, i) => {
+    const personTags = item.matchedPersons.map(p =>
+      `<span class="person-match">${PERSON_ICONS[p]} ${p}</span>`
+    ).join('');
+
+    const sizeNote = item.sizeOk
+      ? `<span class="tag" style="background:#edf5ed;color:#4a7a4a">Größe passt</span>`
+      : `<span class="tag" style="background:#fdf0e8;color:#8a4a10">Größe prüfen</span>`;
+
+    if (item.useFirstImage && item.image) {
+      return `
+        <div class="wardrobe-item" style="animation-delay:${i * 0.08}s">
+          <img src="${item.image}" alt="${item.label}" loading="lazy" onerror="this.parentElement.querySelector('.wardrobe-fallback').style.display='flex';this.style.display='none'">
+          <div class="wardrobe-fallback" style="display:none;background:var(--beige-warm);height:200px;align-items:center;justify-content:center;font-size:2.5rem">👗</div>
+          <div class="wardrobe-item-info">
+            <div class="wardrobe-item-label">${item.label}</div>
+            <div class="wardrobe-item-meta">
+              <span class="tag">${item.color}</span>
+              ${sizeNote}
+              ${personTags}
+            </div>
+          </div>
+        </div>`;
+    } else {
+      return `
+        <div class="wardrobe-item" style="animation-delay:${i * 0.08}s">
+          <div style="background:var(--beige-warm);height:160px;display:flex;align-items:center;justify-content:center;font-size:2.8rem">${item.icon || '👗'}</div>
+          <div class="wardrobe-item-info">
+            <div class="wardrobe-item-label">${item.label}</div>
+            <div class="wardrobe-item-meta">
+              <span class="tag">${item.color}</span>
+              ${sizeNote}
+              ${personTags}
+            </div>
+          </div>
+        </div>`;
+    }
+  }).join('');
+}
+
+// ═══ ONLINE SEARCH ═══
+async function startOnlineSearch() {
+  document.getElementById('online-trigger-section').style.display = 'none';
+  const onlineSection = document.getElementById('online-section');
+  onlineSection.style.display = '';
+
+  const resultsDiv = document.getElementById('online-results');
+  resultsDiv.innerHTML = `
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Suche passende Outfits in DACH-Shops …</p>
+    </div>`;
+
+  try {
+    const prompt = buildSearchPrompt();
+    const response = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    const data = await response.json();
+    const text = data.content?.[0]?.text || '';
+
+    let parsed;
+    try {
+      const clean = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+      parsed = JSON.parse(clean);
+    } catch {
+      throw new Error('JSON-Parsing fehlgeschlagen');
+    }
+
+    renderOnlineResults(parsed);
+    showTips(parsed.tips);
+    document.getElementById('action-section').style.display = '';
+    document.getElementById('tips-section').style.display = '';
+
+  } catch (err) {
+    resultsDiv.innerHTML = `
+      <div class="error-note">
+        Die Online-Suche konnte nicht gestartet werden. Bitte stelle sicher, dass du mit dem Internet verbunden bist und versuche es erneut.
+        <br><small>${err.message}</small>
+      </div>`;
+  }
+}
+
+function buildSearchPrompt() {
+  const paletteDesc = selectedPalette.name + ' (' + selectedPalette.keywords.slice(0, 4).join(', ') + ')';
+  const styleDesc = selectedStyle.name;
+  const budget = selectedBudget;
+  const personsDesc = persons.map(p => `${p.type} Größe ${p.size}`).join(', ');
+
+  return `Du bist ein Outfit-Berater für professionelle Foto-Shootings mit Familien.
+Finde für jede Person ein konkretes, kaufbares Outfit aus DACH-Shops (Zalando, H&M, Zara, C&A, About You, Mango, s.Oliver, EDITED, hessnatur, Amara, Depot oder ähnliche deutsche/österreichische/schweizer Onlineshops).
+
+Parameter:
+- Farbpalette: ${paletteDesc}
+- Stil: ${styleDesc}
+- Budget pro Person: bis ${budget}€
+- Personen: ${personsDesc}
+
+Wichtig für Foto-Shootings:
+- Keine Logos, Schriftzüge oder kleinteilige Muster
+- Kein reines Schwarz
+- Harmonisch abgestimmt als Gruppe
+- Leichte Stoffe, fließend wenn möglich
+- Zur Farbpalette passend
+
+Antworte NUR mit einem JSON-Objekt in diesem genauen Format (kein Markdown, kein Erklärungstext):
+{
+  "outfits": [
+    {
+      "person": "Mama",
+      "icon": "👩",
+      "size": "M",
+      "items": [
+        {
+          "type": "Kleid",
+          "icon": "👗",
+          "name": "Konkreter Produktname",
+          "shop": "Zalando",
+          "url": "https://www.zalando.de/suche?q=leinenkleid+creme+damen",
+          "priceApprox": "49"
+        }
+      ]
+    }
+  ],
+  "tips": [
+    "Tipp 1 zur harmonischen Farbabstimmung",
+    "Tipp 2 zu Stoffen und Materialien",
+    "Tipp 3 zu Accessoires"
+  ]
+}`;
+}
+
+function renderOnlineResults(data) {
+  const resultsDiv = document.getElementById('online-results');
+  if (!data.outfits || data.outfits.length === 0) {
+    resultsDiv.innerHTML = '<div class="error-note">Keine Ergebnisse gefunden. Bitte versuche es erneut.</div>';
+    return;
+  }
+
+  resultsDiv.innerHTML = data.outfits.map((outfit, i) => `
+    <div class="person-outfit-card" style="animation-delay:${i * 0.1}s">
+      <div class="person-outfit-header">
+        <div class="person-avatar">${outfit.icon || '👤'}</div>
+        <div>
+          <div class="person-outfit-name">${outfit.person}</div>
+          <div class="person-outfit-size">Größe ${outfit.size}</div>
+        </div>
+      </div>
+      <div class="outfit-items">
+        ${(outfit.items || []).map(item => `
+          <div class="outfit-item">
+            <div class="outfit-item-icon">${item.icon || '👚'}</div>
+            <div class="outfit-item-text">
+              <div class="outfit-item-name">${item.name}</div>
+              <div class="outfit-item-shop">
+                ${item.url
+                  ? `<a href="${item.url}" target="_blank" rel="noopener">${item.shop} ↗</a>`
+                  : item.shop
+                }
+              </div>
+            </div>
+            <div class="outfit-item-price">ca. ${item.priceApprox} €</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function showTips(tips) {
+  if (!tips || tips.length === 0) return;
+  const ICONS = ['🎨', '🧵', '✨', '📸', '🌿', '💡'];
+  const grid = document.getElementById('tips-grid');
+  grid.innerHTML = tips.map((tip, i) => `
+    <div class="tip-item">
+      <div class="tip-icon">${ICONS[i % ICONS.length]}</div>
+      <div class="tip-text">${tip}</div>
+    </div>
+  `).join('');
+}
+
+// ═══ ACTIONS ═══
+function copyResults() {
+  const outfitCards = document.querySelectorAll('.person-outfit-card');
+  const lines = ['Anne Günst Fotografie – Outfit-Empfehlungen\n'];
+  lines.push(`Farbpalette: ${selectedPalette?.name}`);
+  lines.push(`Stil: ${selectedStyle?.name}`);
+  lines.push(`Budget: bis ${selectedBudget} € pro Person\n`);
+
+  outfitCards.forEach(card => {
+    const name = card.querySelector('.person-outfit-name')?.textContent || '';
+    const size = card.querySelector('.person-outfit-size')?.textContent || '';
+    lines.push(`── ${name} (${size})`);
+    card.querySelectorAll('.outfit-item').forEach(item => {
+      const n = item.querySelector('.outfit-item-name')?.textContent || '';
+      const shop = item.querySelector('.outfit-item-shop')?.textContent?.trim() || '';
+      const price = item.querySelector('.outfit-item-price')?.textContent || '';
+      lines.push(`   • ${n} – ${shop} – ${price}`);
+    });
+    lines.push('');
+  });
+
+  const tips = document.querySelectorAll('.tip-text');
+  if (tips.length) {
+    lines.push('Styling-Tipps:');
+    tips.forEach(t => lines.push(`• ${t.textContent}`));
+  }
+
+  navigator.clipboard.writeText(lines.join('\n')).then(() => {
+    const btn = document.querySelector('.action-buttons .btn-secondary');
+    const orig = btn.textContent;
+    btn.textContent = '✓ Kopiert!';
+    setTimeout(() => btn.textContent = orig, 2000);
+  }).catch(() => alert('Kopieren nicht möglich – bitte manuell markieren.'));
+}
+
+function printAsPDF() {
+  window.print();
+}
+
+function goBack() {
+  document.getElementById('page-results').classList.remove('active');
+  document.getElementById('page-input').classList.add('active');
+  // Reset online section
+  document.getElementById('online-section').style.display = 'none';
+  document.getElementById('online-results').innerHTML = '';
+  document.getElementById('tips-section').style.display = 'none';
+  document.getElementById('action-section').style.display = 'none';
+  document.getElementById('online-trigger-section').style.display = '';
+  document.getElementById('wardrobe-section').style.display = 'none';
+  window.scrollTo(0, 0);
+}
+
+// ═══ PRINT STYLES ═══
+const printStyle = document.createElement('style');
+printStyle.textContent = `
+  @media print {
+    header { position: static !important; }
+    #page-input { display: none !important; }
+    #page-results { display: block !important; }
+    .action-buttons { display: none !important; }
+    #online-trigger-section { display: none !important; }
+    .btn-primary, .btn-secondary { display: none !important; }
+    body { background: white !important; }
+    .step-block, .person-outfit-card, #tips-section { box-shadow: none !important; border-color: #ddd !important; }
+  }
+`;
+document.head.appendChild(printStyle);
+</script>
+
+</body>
+</html>
