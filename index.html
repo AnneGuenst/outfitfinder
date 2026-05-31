@@ -36,30 +36,49 @@
 
   /* ── HEADER ── */
   header {
-    background: var(--beige-light);
-    padding: 44px 40px 0;
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 28px 40px;
     display: flex;
-    flex-direction: column;
     align-items: center;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 1px 12px rgba(162,106,37,0.06);
   }
-  .logo-img {
-    height: 52px;
-    width: auto;
+  .logo-circle {
+    width: 44px; height: 44px;
+    background: var(--brown);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: white;
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  header h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 1.15rem;
+    color: var(--text);
+    letter-spacing: 0.02em;
+  }
+  header span {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 0.8rem;
+    color: var(--text-muted);
     display: block;
-    opacity: 0.9;
-  }
-  .header-divider {
-    width: 1px;
-    height: 36px;
-    background: var(--border);
-    margin: 20px auto 0;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
 
   /* ── MAIN CONTAINER ── */
   .container {
     max-width: 760px;
     margin: 0 auto;
-    padding: 40px 24px 100px;
+    padding: 60px 24px 100px;
   }
 
   /* ── PAGE SECTIONS ── */
@@ -100,17 +119,9 @@
   .intro p {
     color: var(--text-muted);
     font-size: 0.95rem;
-    max-width: 520px;
-    margin: 0 auto 12px;
+    max-width: 480px;
+    margin: 0 auto;
   }
-  .intro p:last-child { margin-bottom: 0; }
-  .intro a {
-    color: var(--brown);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    font-weight: 400;
-  }
-  .intro a:hover { opacity: 0.75; }
 
   /* ── STEP BLOCKS ── */
   .step-block {
@@ -676,8 +687,11 @@
 <body>
 
 <header>
-  <img class="logo-img" src="https://images.squarespace-cdn.com/content/5c2e0c9a12b13fcbf149aa2c/70d67b85-3b85-41a1-af99-6f7cad798757/Logoschwarz.png?content-type=image%2Fpng" alt="Anne Günst Fotografie">
-  <div class="header-divider"></div>
+  <div class="logo-circle">A</div>
+  <div>
+    <h1>Anne Günst Fotografie</h1>
+    <span>Outfit-Finder für dein Shooting</span>
+  </div>
 </header>
 
 <!-- ═══ PAGE 1: INPUT ═══ -->
@@ -687,8 +701,7 @@
     <div class="intro">
       <div class="intro-tag">Outfit-Beratung</div>
       <h2>Findet eure<br>perfekten Shooting-Outfits</h2>
-      <p>Nicht immer werden alle Shooting-Teilnehmer in meinem <a href="https://www.anneguenst.de/kleiderschrank" target="_blank" rel="noopener">Kleiderschrank</a> fündig – damit ich euch bei der Suche nach dem perfekten Outfit nicht allein lasse, habe ich diesen Finder entwickelt.</p>
-      <p>Gebt eure Wünsche ein und erhaltet passende Empfehlungen aus deutschen Online-Shops. Ihr könnt die Kleidung dort direkt erwerben – oder mich vorab kontaktieren: Ich helfe gerne dabei, passende Stücke zu organisieren, auch wenn sie noch nicht in meinem Kleiderschrank zu finden sind.</p>
+      <p>Beantwortet vier kurze Fragen – ich durchsuche zuerst meinen Kleiderschrank und finde dann passende Outfits für euch.</p>
     </div>
 
     <!-- Step 1: Palette -->
@@ -864,12 +877,62 @@ const PALETTES = [
 ];
 
 const STYLE_SVGS = {
-  'clean-elegant': '<svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg"><path d="M13 4 Q18 2 23 4 L25 12 Q22 11 18 11 Q14 11 11 12 Z"/><path d="M11 12 Q7 18 6 28 Q10 30 18 30 Q26 30 30 28 Q29 18 25 12"/><path d="M14 11 Q18 14 22 11"/><line x1="18" y1="2" x2="18" y2="4"/></svg>',
-  'boho-natural': '<svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg"><path d="M18 30 Q18 16 8 8 Q14 8 20 12 Q26 16 26 24 Q22 28 18 30Z"/><line x1="18" y1="30" x2="16" y2="14"/><path d="M16 22 Q12 20 10 16"/><path d="M17 18 Q13 17 11 13"/><line x1="18" y1="30" x2="18" y2="33"/></svg>',
-  'romantic-feminine': '<svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg"><path d="M18 24 Q13 22 12 16 Q12 10 18 8 Q24 10 24 16 Q23 22 18 24Z"/><path d="M18 8 Q16 4 13 5 Q11 8 13 12"/><path d="M18 8 Q20 4 23 5 Q25 8 23 12"/><line x1="18" y1="24" x2="18" y2="32"/><path d="M14 30 Q18 28 22 30"/></svg>',
-  'earth-outdoor': '<svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg"><polyline points="3,28 12,12 18,20 22,14 33,28"/><line x1="2" y1="28" x2="34" y2="28"/><circle cx="27" cy="10" r="4"/><line x1="27" y1="6" x2="27" y2="4"/><line x1="31" y1="7" x2="33" y2="5"/><line x1="31" y1="10" x2="33" y2="10"/></svg>',
-  'baby-kids': '<svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg"><path d="M11 8 L8 14 L12 15 L12 28 L24 28 L24 15 L28 14 L25 8 Q22 12 18 12 Q14 12 11 8Z"/><circle cx="18" cy="6" r="3"/><line x1="16" y1="21" x2="20" y2="21"/></svg>',
-  'family': '<svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="9" r="3"/><line x1="10" y1="12" x2="10" y2="22"/><line x1="6" y1="16" x2="14" y2="16"/><line x1="10" y1="22" x2="7" y2="29"/><line x1="10" y1="22" x2="13" y2="29"/><circle cx="26" cy="9" r="3"/><line x1="26" y1="12" x2="26" y2="22"/><line x1="22" y1="16" x2="30" y2="16"/><line x1="26" y1="22" x2="23" y2="29"/><line x1="26" y1="22" x2="29" y2="29"/><circle cx="18" cy="14" r="2.2"/><line x1="18" y1="16.2" x2="18" y2="24"/><line x1="15" y1="19" x2="21" y2="19"/><line x1="18" y1="24" x2="16" y2="29"/><line x1="18" y1="24" x2="20" y2="29"/></svg>',
+  'clean-elegant': `<svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+    <!-- Elegant dress silhouette -->
+    <path d="M13 4 Q18 2 23 4 L25 12 Q22 11 18 11 Q14 11 11 12 Z"/>
+    <path d="M11 12 Q7 18 6 28 Q10 30 18 30 Q26 30 30 28 Q29 18 25 12"/>
+    <path d="M14 11 Q18 14 22 11"/>
+    <line x1="18" y1="2" x2="18" y2="4"/>
+  </svg>`,
+  'boho-natural': `<svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+    <!-- Leaf / botanical -->
+    <path d="M18 30 Q18 16 8 8 Q14 8 20 12 Q26 16 26 24 Q22 28 18 30Z"/>
+    <line x1="18" y1="30" x2="16" y2="14"/>
+    <path d="M16 22 Q12 20 10 16"/>
+    <path d="M17 18 Q13 17 11 13"/>
+    <line x1="18" y1="30" x2="18" y2="33"/>
+  </svg>`,
+  'romantic-feminine': `<svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+    <!-- Tulip / flower -->
+    <path d="M18 24 Q13 22 12 16 Q12 10 18 8 Q24 10 24 16 Q23 22 18 24Z"/>
+    <path d="M18 8 Q16 4 13 5 Q11 8 13 12"/>
+    <path d="M18 8 Q20 4 23 5 Q25 8 23 12"/>
+    <line x1="18" y1="24" x2="18" y2="32"/>
+    <path d="M14 30 Q18 28 22 30"/>
+  </svg>`,
+  'earth-outdoor': `<svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+    <!-- Mountain / landscape -->
+    <polyline points="3,28 12,12 18,20 22,14 33,28"/>
+    <line x1="2" y1="28" x2="34" y2="28"/>
+    <circle cx="27" cy="10" r="4"/>
+    <line x1="27" y1="6" x2="27" y2="4"/>
+    <line x1="31" y1="7" x2="33" y2="5"/>
+    <line x1="31" y1="10" x2="33" y2="10"/>
+  </svg>`,
+  'baby-kids': `<svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+    <!-- Baby onesie -->
+    <path d="M11 8 L8 14 L12 15 L12 28 L24 28 L24 15 L28 14 L25 8 Q22 12 18 12 Q14 12 11 8Z"/>
+    <circle cx="18" cy="6" r="3"/>
+    <line x1="16" y1="21" x2="20" y2="21"/>
+  </svg>`,
+  'family': `<svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+    <!-- Three figures: adult, adult, child -->
+    <circle cx="10" cy="9" r="3"/>
+    <line x1="10" y1="12" x2="10" y2="22"/>
+    <line x1="6" y1="16" x2="14" y2="16"/>
+    <line x1="10" y1="22" x2="7" y2="29"/>
+    <line x1="10" y1="22" x2="13" y2="29"/>
+    <circle cx="26" cy="9" r="3"/>
+    <line x1="26" y1="12" x2="26" y2="22"/>
+    <line x1="22" y1="16" x2="30" y2="16"/>
+    <line x1="26" y1="22" x2="23" y2="29"/>
+    <line x1="26" y1="22" x2="29" y2="29"/>
+    <circle cx="18" cy="14" r="2.2"/>
+    <line x1="18" y1="16.2" x2="18" y2="24"/>
+    <line x1="15" y1="19" x2="21" y2="19"/>
+    <line x1="18" y1="24" x2="16" y2="29"/>
+    <line x1="18" y1="24" x2="20" y2="29"/>
+  </svg>`,
 };
 
 const STYLES = [
@@ -983,24 +1046,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function renderPalettes() {
   const grid = document.getElementById('palette-grid');
-  grid.innerHTML = PALETTES.map(function(p) {
-    const swatches = p.colors.map(function(c) { return '<div style="background:' + c + '"></div>'; }).join('');
-    return '<div class="palette-card" data-id="' + p.id + '" onclick="selectPalette(\'' + p.id + '\', this)">'
-      + '<div class="palette-swatch">' + swatches + '</div>'
-      + '<div class="palette-label"><strong>' + p.name + '</strong><span>' + p.subtitle + '</span></div>'
-      + '</div>';
-  }).join('');
+  grid.innerHTML = PALETTES.map(p => `
+    <div class="palette-card" data-id="${p.id}" onclick="selectPalette('${p.id}', this)">
+      <div class="palette-swatch">
+        ${p.colors.map(c => `<div style="background:${c}"></div>`).join('')}
+      </div>
+      <div class="palette-label">
+        <strong>${p.name}</strong>
+        <span>${p.subtitle}</span>
+      </div>
+    </div>
+  `).join('');
 }
 
 function renderStyles() {
   const grid = document.getElementById('style-grid');
-  grid.innerHTML = STYLES.map(function(s) {
-    return '<div class="style-card" data-id="' + s.id + '" onclick="selectStyle(\'' + s.id + '\', this)">'
-      + '<div class="style-icon">' + (STYLE_SVGS[s.id] || '') + '</div>'
-      + '<div class="style-name">' + s.name + '</div>'
-      + '<div class="style-desc">' + s.desc + '</div>'
-      + '</div>';
-  }).join('');
+  grid.innerHTML = STYLES.map(s => `
+    <div class="style-card" data-id="${s.id}" onclick="selectStyle('${s.id}', this)">
+      <div class="style-icon">${STYLE_SVGS[s.id] || ''}</div>
+      <div class="style-name">${s.name}</div>
+      <div class="style-desc">${s.desc}</div>
+    </div>
+  `).join('');
 }
 
 function selectPalette(id, el) {
@@ -1043,7 +1110,7 @@ const PERSON_ICONS = {
 
 function addPerson(type) {
   personCounter++;
-  const id = 'person-' + personCounter;
+  const id = `person-${personCounter}`;
   persons.push({ id, type, size: PERSON_SIZES[type][1] || 'M' });
   renderPersonList();
   updateFindBtn();
@@ -1080,12 +1147,85 @@ function findOutfits() {
   document.getElementById('page-input').classList.remove('active');
   document.getElementById('page-results').classList.add('active');
   window.scrollTo(0, 0);
-  // Skip wardrobe – go straight to online search
-  document.getElementById('wardrobe-section').style.display = 'none';
-  document.getElementById('online-trigger-section').style.display = 'none';
-  startOnlineSearch();
+
+  // Search wardrobe
+  const matched = searchWardrobe();
+  if (matched.length > 0) {
+    showWardrobeResults(matched);
+    document.getElementById('online-trigger-section').style.display = '';
+  } else {
+    // No wardrobe match – start online search directly
+    document.getElementById('wardrobe-section').style.display = 'none';
+    document.getElementById('online-trigger-section').style.display = 'none';
+    startOnlineSearch();
+  }
 }
 
+function searchWardrobe() {
+  const paletteKeys = selectedPalette.keywords;
+  const styleId = selectedStyle.id;
+  const personTypes = persons.map(p => p.type);
+  const personSizes = persons.reduce((acc, p) => { acc[p.type] = acc[p.type] || []; acc[p.type].push(p.size); return acc; }, {});
+
+  return WARDROBE.filter(item => {
+    const paletteMatch = item.colorKey.some(k => paletteKeys.includes(k));
+    const styleMatch = item.style.includes(styleId);
+    const personMatch = item.persons.some(pt => personTypes.includes(pt));
+    return paletteMatch && styleMatch && personMatch;
+  }).map(item => {
+    const matchedPersons = item.persons.filter(pt => personTypes.includes(pt));
+    const sizeOk = matchedPersons.some(pt => {
+      const needed = personSizes[pt] || [];
+      return needed.some(s => item.sizes.includes(s));
+    });
+    return { ...item, matchedPersons, sizeOk };
+  }).filter(item => item.matchedPersons.length > 0);
+}
+
+function showWardrobeResults(items) {
+  const section = document.getElementById('wardrobe-section');
+  const grid = document.getElementById('wardrobe-grid');
+  section.style.display = '';
+
+  grid.innerHTML = items.map((item, i) => {
+    const personTags = item.matchedPersons.map(p =>
+      `<span class="person-match">${PERSON_ICONS[p]} ${p}</span>`
+    ).join('');
+
+    const sizeNote = item.sizeOk
+      ? `<span class="tag" style="background:#edf5ed;color:#4a7a4a">Größe passt</span>`
+      : `<span class="tag" style="background:#fdf0e8;color:#8a4a10">Größe prüfen</span>`;
+
+    if (item.useFirstImage && item.image) {
+      return `
+        <div class="wardrobe-item" style="animation-delay:${i * 0.08}s">
+          <img src="${item.image}" alt="${item.label}" loading="lazy" onerror="this.parentElement.querySelector('.wardrobe-fallback').style.display='flex';this.style.display='none'">
+          <div class="wardrobe-fallback" style="display:none;background:var(--beige-warm);height:200px;align-items:center;justify-content:center;font-size:2.5rem">👗</div>
+          <div class="wardrobe-item-info">
+            <div class="wardrobe-item-label">${item.label}</div>
+            <div class="wardrobe-item-meta">
+              <span class="tag">${item.color}</span>
+              ${sizeNote}
+              ${personTags}
+            </div>
+          </div>
+        </div>`;
+    } else {
+      return `
+        <div class="wardrobe-item" style="animation-delay:${i * 0.08}s">
+          <div style="background:var(--beige-warm);height:160px;display:flex;align-items:center;justify-content:center;font-size:2.8rem">${item.icon || '👗'}</div>
+          <div class="wardrobe-item-info">
+            <div class="wardrobe-item-label">${item.label}</div>
+            <div class="wardrobe-item-meta">
+              <span class="tag">${item.color}</span>
+              ${sizeNote}
+              ${personTags}
+            </div>
+          </div>
+        </div>`;
+    }
+  }).join('');
+}
 
 // ═══ ONLINE SEARCH ═══
 async function startOnlineSearch() {
@@ -1094,41 +1234,33 @@ async function startOnlineSearch() {
   onlineSection.style.display = '';
 
   const resultsDiv = document.getElementById('online-results');
-  resultsDiv.innerHTML = '<div class="loading-state"><div class="spinner"></div><p>Suche passende Outfits in DACH-Shops …</p></div>';
+  resultsDiv.innerHTML = `
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Suche passende Outfits in DACH-Shops …</p>
+    </div>`;
 
   try {
     const prompt = buildSearchPrompt();
-    const response = await fetch('/api/chat', {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
-      headers: { "Content-Type": "application/json" },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-5',
+        model: 'claude-sonnet-4-20250514',
         max_tokens: 1000,
         messages: [{ role: 'user', content: prompt }]
       })
     });
 
     const data = await response.json();
-
-    // Show API-level errors clearly
-    if (data.error) {
-      throw new Error('API-Fehler: ' + (data.error.message || JSON.stringify(data.error)));
-    }
-
     const text = data.content?.[0]?.text || '';
-    if (!text) throw new Error('Leere Antwort vom Server');
 
     let parsed;
     try {
-      // Strip markdown code fences if present
-      const clean = text.replace(/^```json\s*/m, '').replace(/^```\s*/m, '').replace(/```$/m, '').trim();
-      // Find the JSON object within the response
-      const jsonStart = clean.indexOf('{');
-      const jsonEnd = clean.lastIndexOf('}');
-      if (jsonStart === -1 || jsonEnd === -1) throw new Error('Kein JSON gefunden');
-      parsed = JSON.parse(clean.slice(jsonStart, jsonEnd + 1));
-    } catch (e) {
-      throw new Error('Parsing-Fehler: ' + e.message + ' | Antwort: ' + text.slice(0, 200));
+      const clean = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+      parsed = JSON.parse(clean);
+    } catch {
+      throw new Error('JSON-Parsing fehlgeschlagen');
     }
 
     renderOnlineResults(parsed);
@@ -1138,25 +1270,60 @@ async function startOnlineSearch() {
 
   } catch (err) {
     resultsDiv.innerHTML = `
-      '<div class="error-note">Die Online-Suche konnte nicht gestartet werden. Bitte stelle sicher, dass du mit dem Internet verbunden bist und versuche es erneut.<br><small>' + err.message + '</small></div>';
+      <div class="error-note">
+        Die Online-Suche konnte nicht gestartet werden. Bitte stelle sicher, dass du mit dem Internet verbunden bist und versuche es erneut.
+        <br><small>${err.message}</small>
+      </div>`;
   }
 }
 
-// ── SHOP URL BUILDER ──
-const SHOPS = {
-  zalando:  { name: 'Zalando',   buildUrl: (t,sz,g) => 'https://www.zalando.de/'+(g==='male'?'herren':g==='kids'?'kinder':'damen')+'/?q='+encodeURIComponent(t.join(' ')) },
-  aboutyou: { name: 'About You', buildUrl: (t,sz,g) => 'https://www.aboutyou.de/'+(g==='male'?'herren':g==='kids'?'kinder':'damen')+'/suche?term='+encodeURIComponent(t.join(' ')) },
-  hm:       { name: 'H&M',       buildUrl: (t,sz,g) => 'https://www2.hm.com/de_de/'+(g==='male'?'herren':g==='kids'?'kinder':'damen')+'/suche.html?q='+encodeURIComponent(t.join(' ')) },
-  zara:     { name: 'Zara',      buildUrl: (t,sz,g) => 'https://www.zara.com/de/de/search?searchTerm='+encodeURIComponent(t.join(' ')) },
-  mango:    { name: 'Mango',     buildUrl: (t,sz,g) => 'https://shop.mango.com/de/suche?q='+encodeURIComponent(t.join(' ')) },
-};
-const SHOP_KEYS = ['zalando','aboutyou','hm','zara','mango'];
-const PERSON_ICONS_MAP = {Mama:'\u{1F469}',Papa:'\u{1F468}',Kind:'\u{1F9D2}',Schwanger:'\u{1F930}',Baby:'\u{1F476}'};
+function buildSearchPrompt() {
+  const paletteDesc = selectedPalette.name + ' (' + selectedPalette.keywords.slice(0, 4).join(', ') + ')';
+  const styleDesc = selectedStyle.name;
+  const budget = selectedBudget;
+  const personsDesc = persons.map(p => `${p.type} Größe ${p.size}`).join(', ');
 
-function personToGender(type) {
-  if (type === 'Papa') return 'male';
-  if (type === 'Kind' || type === 'Baby') return 'kids';
-  return 'female';
+  return `Du bist ein Outfit-Berater für professionelle Foto-Shootings mit Familien.
+Finde für jede Person ein konkretes, kaufbares Outfit aus DACH-Shops (Zalando, H&M, Zara, C&A, About You, Mango, s.Oliver, EDITED, hessnatur, Amara, Depot oder ähnliche deutsche/österreichische/schweizer Onlineshops).
+
+Parameter:
+- Farbpalette: ${paletteDesc}
+- Stil: ${styleDesc}
+- Budget pro Person: bis ${budget}€
+- Personen: ${personsDesc}
+
+Wichtig für Foto-Shootings:
+- Keine Logos, Schriftzüge oder kleinteilige Muster
+- Kein reines Schwarz
+- Harmonisch abgestimmt als Gruppe
+- Leichte Stoffe, fließend wenn möglich
+- Zur Farbpalette passend
+
+Antworte NUR mit einem JSON-Objekt in diesem genauen Format (kein Markdown, kein Erklärungstext):
+{
+  "outfits": [
+    {
+      "person": "Mama",
+      "icon": "👩",
+      "size": "M",
+      "items": [
+        {
+          "type": "Kleid",
+          "icon": "👗",
+          "name": "Konkreter Produktname",
+          "shop": "Zalando",
+          "url": "https://www.zalando.de/suche?q=leinenkleid+creme+damen",
+          "priceApprox": "49"
+        }
+      ]
+    }
+  ],
+  "tips": [
+    "Tipp 1 zur harmonischen Farbabstimmung",
+    "Tipp 2 zu Stoffen und Materialien",
+    "Tipp 3 zu Accessoires"
+  ]
+}`;
 }
 
 function renderOnlineResults(data) {
@@ -1165,56 +1332,47 @@ function renderOnlineResults(data) {
     resultsDiv.innerHTML = '<div class="error-note">Keine Ergebnisse gefunden. Bitte versuche es erneut.</div>';
     return;
   }
-  resultsDiv.innerHTML = data.outfits.map(function(outfit, i) {
-    const shopKey = SHOP_KEYS[i % SHOP_KEYS.length];
-    const shop = SHOPS[shopKey];
-    const gender = personToGender(outfit.person);
-    const icons = {Mama:'\u{1F469}',Papa:'\u{1F468}',Kind:'\u{1F9D2}',Schwanger:'\u{1F930}',Baby:'\u{1F476}'};
-    const personIcon = icons[outfit.person] || '\u{1F464}';
-    const itemsHtml = (outfit.items || []).map(function(item) {
-      const terms = Array.isArray(item.searchTerms) ? item.searchTerms : [item.label || item.type];
-      const url = shop.buildUrl(terms, outfit.size, gender);
-      return '<div class="outfit-item">'
-        + '<div class="outfit-item-icon">' + (item.icon || '\u{1F455}') + '</div>'
-        + '<div class="outfit-item-text">'
-        + '<div class="outfit-item-name">' + (item.label || item.name || item.type) + '</div>'
-        + '<div class="outfit-item-shop"><a href="' + url + '" target="_blank" rel="noopener">Bei ' + shop.name + ' suchen \u2197</a></div>'
-        + '</div>'
-        + '<div class="outfit-item-price">ca. ' + item.priceApprox + ' \u20AC</div>'
-        + '</div>';
-    }).join('');
-    return '<div class="person-outfit-card" style="animation-delay:' + (i*0.1) + 's">'
-      + '<div class="person-outfit-header">'
-      + '<div class="person-avatar">' + personIcon + '</div>'
-      + '<div><div class="person-outfit-name">' + outfit.person + '</div>'
-      + '<div class="person-outfit-size">Gr\u00F6\u00DFe ' + outfit.size + ' \u00B7 empfohlen bei ' + shop.name + '</div></div>'
-      + '</div>'
-      + '<div class="outfit-items">' + itemsHtml + '</div>'
-      + '</div>';
-  }).join('');
+
+  resultsDiv.innerHTML = data.outfits.map((outfit, i) => `
+    <div class="person-outfit-card" style="animation-delay:${i * 0.1}s">
+      <div class="person-outfit-header">
+        <div class="person-avatar">${outfit.icon || '👤'}</div>
+        <div>
+          <div class="person-outfit-name">${outfit.person}</div>
+          <div class="person-outfit-size">Größe ${outfit.size}</div>
+        </div>
+      </div>
+      <div class="outfit-items">
+        ${(outfit.items || []).map(item => `
+          <div class="outfit-item">
+            <div class="outfit-item-icon">${item.icon || '👚'}</div>
+            <div class="outfit-item-text">
+              <div class="outfit-item-name">${item.name}</div>
+              <div class="outfit-item-shop">
+                ${item.url
+                  ? `<a href="${item.url}" target="_blank" rel="noopener">${item.shop} ↗</a>`
+                  : item.shop
+                }
+              </div>
+            </div>
+            <div class="outfit-item-price">ca. ${item.priceApprox} €</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
 }
-
-function buildSearchPrompt() {
-  const paletteDesc = selectedPalette.name + ' (' + selectedPalette.keywords.slice(0, 4).join(', ') + ')';
-  const styleDesc = selectedStyle.name;
-  const budget = selectedBudget;
-  const personsDesc = persons.map(function(p) { return p.type + ' Groesse ' + p.size; }).join(', ');
-  return 'Du bist ein Outfit-Berater fuer professionelle Foto-Shootings mit Familien. Erstelle fuer jede Person einen kompletten Outfit-Vorschlag.\n\nParameter:\n- Farbpalette: ' + paletteDesc + '\n- Stil: ' + styleDesc + '\n- Budget pro Person: bis ' + budget + ' Euro\n- Personen: ' + personsDesc + '\n\nRegeln: Keine Logos oder Schriftzuege, kein reines Schwarz, harmonisch abgestimmt, leichte fliesende Stoffe, Farben aus der Palette.\n\nFuer jedes Kleidungsstueck gib searchTerms als Array mit 2-4 deutschen Suchbegriffen an (keine Markennamen). Beispiel: ["leinenkleid","creme"] oder ["strickpullover","beige"].\n\nAntworte NUR mit diesem JSON ohne Text oder Codeblock davor oder danach:\n{"outfits":[{"person":"Mama","size":"M","items":[{"type":"Kleid","icon":"\u{1F457}","label":"Fliessendes Leinenkleid Creme","searchTerms":["leinenkleid","creme"],"priceApprox":"49"}]}],"tips":["Tipp 1","Tipp 2","Tipp 3"]}';
-}`;
-}
-
-
 
 function showTips(tips) {
   if (!tips || tips.length === 0) return;
   const ICONS = ['🎨', '🧵', '✨', '📸', '🌿', '💡'];
   const grid = document.getElementById('tips-grid');
-  grid.innerHTML = tips.map(function(tip, i) {
-    return '<div class="tip-item">'
-      + '<div class="tip-icon">' + ICONS[i % ICONS.length] + '</div>'
-      + '<div class="tip-text">' + tip + '</div>'
-      + '</div>';
-  }).join('');
+  grid.innerHTML = tips.map((tip, i) => `
+    <div class="tip-item">
+      <div class="tip-icon">${ICONS[i % ICONS.length]}</div>
+      <div class="tip-text">${tip}</div>
+    </div>
+  `).join('');
 }
 
 // ═══ ACTIONS ═══
@@ -1228,12 +1386,12 @@ function copyResults() {
   outfitCards.forEach(card => {
     const name = card.querySelector('.person-outfit-name')?.textContent || '';
     const size = card.querySelector('.person-outfit-size')?.textContent || '';
-    lines.push('── ' + name + ' (' + size + ')');
+    lines.push(`── ${name} (${size})`);
     card.querySelectorAll('.outfit-item').forEach(item => {
       const n = item.querySelector('.outfit-item-name')?.textContent || '';
       const shop = item.querySelector('.outfit-item-shop')?.textContent?.trim() || '';
       const price = item.querySelector('.outfit-item-price')?.textContent || '';
-      lines.push('   • ' + n + ' – ' + shop + ' – ' + price);
+      lines.push(`   • ${n} – ${shop} – ${price}`);
     });
     lines.push('');
   });
@@ -1241,7 +1399,7 @@ function copyResults() {
   const tips = document.querySelectorAll('.tip-text');
   if (tips.length) {
     lines.push('Styling-Tipps:');
-    tips.forEach(function(t) { lines.push('• ' + t.textContent); });
+    tips.forEach(t => lines.push(`• ${t.textContent}`));
   }
 
   navigator.clipboard.writeText(lines.join('\n')).then(() => {
