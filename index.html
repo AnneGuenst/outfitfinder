@@ -509,9 +509,11 @@ function buildPrompt() {
     + "\nBudget pro Person: bis " + selectedBudget + " Euro"
     + "\nPersonen: " + persons_str
     + "\n\nRegeln: Keine Logos, kein reines Schwarz, harmonisch abgestimmt, leichte Stoffe, Farben aus der Palette."
+    + "\nKEINE Schuhe vorschlagen."
+    + "\nFuer Oberteile und Hosen/Roecke jeweils zwei Alternativen als separates Item mit leicht unterschiedlichen searchTerms angeben (z.B. eine eher klassisch, eine eher boho)."
     + "\nFuer jedes Teil: searchTerms als Array mit 2-4 deutschen Suchbegriffen (keine Markennamen). Beispiel: [\"leinenkleid\",\"creme\"]"
     + "\n\nAntworte NUR mit JSON, kein Text, keine Codeblock-Marker:"
-    + '\n{"outfits":[{"person":"Mama","size":"M","items":[{"type":"Kleid","icon":"👗","label":"Fliessenes Leinenkleid","searchTerms":["leinenkleid","creme"],"priceApprox":"49"}]}],"tips":["Tipp 1","Tipp 2","Tipp 3"]}';
+    + '\n{"outfits":[{"person":"Mama","size":"M","items":[{"type":"Kleid Option 1","icon":"👗","label":"Fliessendes Leinenkleid","searchTerms":["leinenkleid","creme"],"priceApprox":"49"},{"type":"Kleid Option 2","icon":"👗","label":"Midi-Kleid Boho","searchTerms":["midi kleid","beige","boho"],"priceApprox":"55"}]}],"tips":["Tipp 1","Tipp 2","Tipp 3"]}';
 }
 
 function renderResults(data) {
@@ -529,17 +531,42 @@ function renderResults(data) {
     var icon = PERSON_ICONS[outfit.person] || "👤";
     var itemsHtml = "";
     var items = outfit.items || [];
+    // Group items: pair up Option 1 / Option 2 for same base type
+    var grouped = [];
     for (var j = 0; j < items.length; j++) {
       var item = items[j];
-      var terms = Array.isArray(item.searchTerms) ? item.searchTerms.join(" ") : (item.label || item.type);
-      var url = shop.url(terms, gender);
+      var baseType = item.type.replace(/ Option [12]$/i, "").trim();
+      var isOpt2 = / Option 2$/i.test(item.type);
+      if (isOpt2 && grouped.length > 0 && grouped[grouped.length-1].alt === null) {
+        grouped[grouped.length-1].alt = item;
+      } else {
+        grouped.push({ main: item, alt: null, baseType: baseType });
+      }
+    }
+    var shopKeys2 = SHOP_KEYS.slice(); // use rotating second shop for alt
+    for (var j = 0; j < grouped.length; j++) {
+      var g = grouped[j];
+      var mainTerms = Array.isArray(g.main.searchTerms) ? g.main.searchTerms.join(" ") : (g.main.label || g.main.type);
+      var mainUrl = shop.url(mainTerms, gender);
+      // Pick a different shop for the alt link
+      var altShopKey = SHOP_KEYS[(SHOP_KEYS.indexOf(shopKey) + j + 1) % SHOP_KEYS.length];
+      var altShop = SHOPS[altShopKey];
+      var altHtml = "";
+      if (g.alt) {
+        var altTerms = Array.isArray(g.alt.searchTerms) ? g.alt.searchTerms.join(" ") : (g.alt.label || g.alt.type);
+        var altUrl = altShop.url(altTerms, gender);
+        altHtml = " &nbsp;·&nbsp; <a href='" + altUrl + "' target='_blank' rel='noopener'>Bei " + altShop.name + " suchen ↗</a>";
+      }
       itemsHtml += "<div class='outfit-item'>"
-        + "<div class='outfit-item-icon'>" + (item.icon || "👚") + "</div>"
+        + "<div class='outfit-item-icon'>" + (g.main.icon || "👚") + "</div>"
         + "<div class='outfit-item-text'>"
-        + "<div class='outfit-item-name'>" + (item.label || item.type) + "</div>"
-        + "<div class='outfit-item-shop'><a href='" + url + "' target='_blank' rel='noopener'>Bei " + shop.name + " suchen ↗</a></div>"
+        + "<div class='outfit-item-name'>" + (g.main.label || g.baseType) + "</div>"
+        + "<div class='outfit-item-shop'>"
+        + "<a href='" + mainUrl + "' target='_blank' rel='noopener'>Bei " + shop.name + " suchen ↗</a>"
+        + altHtml
         + "</div>"
-        + "<div class='outfit-item-price'>ca. " + (item.priceApprox || "–") + " €</div>"
+        + "</div>"
+        + "<div class='outfit-item-price'>ca. " + (g.main.priceApprox || "–") + " €</div>"
         + "</div>";
     }
     html += "<div class='person-outfit-card' style='animation-delay:" + (i*0.1) + "s'>"
