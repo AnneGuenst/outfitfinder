@@ -100,6 +100,7 @@ header { background: var(--beige-light); padding: 44px 40px 0; display: flex; fl
 .results-header { text-align: center; margin-bottom: 48px; }
 .results-header h2 { font-family: 'Fraunces', serif; font-weight: 400; font-size: 2.4rem; margin-bottom: 8px; }
 .results-header p { color: var(--text-muted); font-size: 1.08rem; }
+.zara-hint { font-size: 0.78rem; color: var(--brown); font-style: italic; font-weight: 300; }
 .results-hint { font-size: 0.95rem !important; color: var(--text-muted); background: var(--beige-warm); border-radius: 8px; padding: 10px 16px; display: inline-block; margin-top: 10px; font-style: italic; }
 .section-heading { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; }
 .section-heading h3 { font-family: 'Fraunces', serif; font-weight: 400; font-size: 1.5rem; white-space: nowrap; }
@@ -179,6 +180,7 @@ body { font-size: 18px; }
 .btn-secondary { font-size: 1.05rem; padding: 17px 28px; }
 .results-header h2 { font-size: 2.8rem; }
 .results-header p { font-size: 1.08rem; }
+.zara-hint { font-size: 0.78rem; color: var(--brown); font-style: italic; font-weight: 300; }
 .results-hint { font-size: 0.95rem !important; }
 .section-heading h3 { font-size: 1.65rem; }
 .person-outfit-name { font-size: 1.2rem; }
@@ -342,12 +344,12 @@ var SHOPS = {
     if (g === "male") return "https://www.zara.com/de/de/search?searchTerm="+encodeURIComponent(t)+"&section=man";
     return "https://www.zara.com/de/de/search?searchTerm="+encodeURIComponent(t)+"&section=woman";
   }},
-  edited: { name: "EDITED", url: function(t,g) {
-    if (g === "kids" || g === "male") return "https://www.edited.de/damen/?q="+encodeURIComponent(t);
-    return "https://www.edited.de/damen/?q="+encodeURIComponent(t);
+  hm: { name: "H&M", url: function(t,g) {
+    var cat = g==="male" ? "herren" : g==="kids" ? "kinder" : "damen";
+    return "https://www2.hm.com/de_de/"+cat+"/produkte.html";
   }}
 };
-var SHOP_KEYS = ["zalando","zara","edited"];
+var SHOP_KEYS = ["zalando","zara","hm"];
 
 var selectedPalette = null;
 var selectedStyle = null;
@@ -678,7 +680,7 @@ function renderResults(data) {
       + "<div class='person-outfit-header'>"
       + "<div class='person-avatar'>" + getPersonSVG(outfit.person) + "</div>"
       + "<div><div class='person-outfit-name'>" + outfit.person + "</div>"
-      + "<div class='person-outfit-size'>Größe " + outfit.size + " · " + shop.name + "</div></div>"
+      + "<div class='person-outfit-size'>Größe " + outfit.size + " · " + shop.name + (shop.name === "Zara" && gender !== "female" ? " <span class=\'zara-hint\'>(bei Herren/Kinder bitte Kategorie oben wechseln)</span>" : "") + "</div></div>"
       + "</div>"
       + "<div class='outfit-items'>" + itemsHtml + "</div>"
       + "</div>";
