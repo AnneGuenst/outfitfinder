@@ -647,13 +647,15 @@ function renderResults(data) {
     for (var j = 0; j < grouped.length; j++) {
       var g = grouped[j];
       var allOpts = [g.main].concat(g.opts);
-      // Build one link per option, rotating through shops
+      // Build links: all shops for the main item's search term
+      var mainOpt = allOpts[0];
+      var mainTerms = mainOpt.search || (Array.isArray(mainOpt.searchTerms) ? mainOpt.searchTerms.join(" ") : (mainOpt.label || mainOpt.type));
       var linksHtml = "";
-      for (var k = 0; k < allOpts.length; k++) {
-        var opt = allOpts[k];
-        var shopKey = SHOP_KEYS[k % SHOP_KEYS.length];
-        var optShop = SHOPS[shopKey];
-        var terms = opt.search || (Array.isArray(opt.searchTerms) ? opt.searchTerms.join(" ") : (opt.label || opt.type));
+      for (var k = 0; k < SHOP_KEYS.length; k++) {
+        var optShop = SHOPS[SHOP_KEYS[k]];
+        // Use alt search terms from option variants if available
+        var opt = allOpts[k] || allOpts[0];
+        var terms = opt.search || (Array.isArray(opt.searchTerms) ? opt.searchTerms.join(" ") : mainTerms);
         var url = optShop.url(terms, gender);
         if (k > 0) linksHtml += " &nbsp;·&nbsp; ";
         linksHtml += "<a href='" + url + "' target='_blank' rel='noopener'>" + optShop.name + " ↗</a>";
