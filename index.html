@@ -334,17 +334,15 @@ var SHOPS = {
   zalando: { name: "Zalando", url: function(t,g) {
     return "https://www.zalando.de/"+(g==="male"?"herren":g==="kids"?"kinder":"damen")+"/?q="+encodeURIComponent(t);
   }},
-  zara:  { name: "Zara",  url: function(t,g) {
-    var section = g==="male" ? "&section=man" : g==="kids" ? "&section=kids" : "&section=woman";
-    return "https://www.zara.com/de/de/search?searchTerm="+encodeURIComponent(t)+section;
+  zara: { name: "Zara", url: function(t,g) {
+    var sec = g==="male" ? "&section=man" : g==="kids" ? "&section=kids" : "&section=woman";
+    return "https://www.zara.com/de/de/search?searchTerm="+encodeURIComponent(t)+sec;
   }},
-  asos:  { name: "ASOS",  url: function(t,g) {
-    var gender = g==="male" ? "men" : g==="kids" ? "kids" : "women";
-    return "https://www.asos.com/"+gender+"/search/?q="+encodeURIComponent(t);
-  }},
-  nakd:  { name: "NA-KD", url: function(t,g) { return "https://www.na-kd.com/de/search?q="+encodeURIComponent(t); }}
+  nakd: { name: "NA-KD", url: function(t,g) {
+    return "https://www.na-kd.com/de/search?q="+encodeURIComponent(t);
+  }}
 };
-var SHOP_KEYS = ["zalando","zara","asos","nakd"];
+var SHOP_KEYS = ["zalando","zara","nakd"];
 
 var selectedPalette = null;
 var selectedStyle = null;
@@ -520,7 +518,7 @@ async function startOnlineSearch() {
     var resp = await fetch("/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ model: "claude-sonnet-4-5", max_tokens: 1500, messages: [{ role: "user", content: prompt }] })
+      body: JSON.stringify({ model: "claude-sonnet-4-5", max_tokens: 800, messages: [{ role: "user", content: prompt }] })
     });
     var data = await resp.json();
     if (data.error) throw new Error("API: " + (data.error.message || JSON.stringify(data.error)));
@@ -539,25 +537,38 @@ async function startOnlineSearch() {
 
 function buildPrompt() {
   var pal = selectedPalette;
-  var palDesc = pal.name + " (" + pal.keywords.slice(0,5).join(", ") + ")";
-  var colorHints = pal.keywords.slice(0,3).join(", ");
-  var persons_str = persons.map(function(p) { return p.type + " Groesse " + p.size; }).join(", ");
+  var colors = pal.keywords.slice(0,3).join(", ");
   var styleGuide = {
-    "bright-timeless":   "Helle, klare Farben. Fliessende zeitlose Schnitte. Leinen, Viskose, Baumwolle. Keine Muster.",
-    "warm-natural":      "Warme Erdtoene. Natuerliche Materialien, Cord, Strick. Laessig aber stimmungsvoll.",
-    "feminine-romantic": "Zarte Farben. Wickelschnitte, Rueschen, weiche Draperien. Feminin und elegant.",
-    "family-harmony":    "Alle Personen aufeinander abstimmen. Gleiche Farbpalette, variierende Saettigungen."
+    "bright-timeless":   "Hell und clean. Fliessende Schnitte. Leinen, Viskose, Baumwolle. Keine Muster.",
+    "warm-natural":      "Warme Erdtoene. Cord, Strick, Naturstoffe. Geerdet und stimmungsvoll.",
+    "feminine-romantic": "Zarte Toene. Wickelschnitte, weiche Stoffe, feminine Details.",
+    "family-harmony":    "Alle Personen farblich aufeinander abstimmen. Harmonisches Gesamtbild."
   };
   var styleHint = styleGuide[selectedStyle.id] || selectedStyle.name;
-  var exampleJson = '{"outfits":[{"person":"Mama","size":"M","items":[{"type":"Kleid Option 1","label":"Fliessendes Leinenkleid","searchTerms":["leinenkleid","creme"],"priceApprox":"49"},{"type":"Kleid Option 2","label":"Midi-Kleid","searchTerms":["midi kleid","sand"],"priceApprox":"55"},{"type":"Kleid Option 3","label":"Maxikleid","searchTerms":["maxikleid","leinen","natur"],"priceApprox":"59"}]}],"tips":["Tipp 1","Tipp 2","Tipp 3"]}';
-  return "Du bist Outfit-Berater fuer Foto-Shootings mit Familien. Erstelle fuer jede Person einen Vorschlag."
-    + " Farbpalette: " + palDesc + "."
-    + " Farbbegriffe fuer searchTerms: " + colorHints + "."
-    + " Stil: " + styleHint
-    + " Budget: bis " + selectedBudget + " Euro. Personen: " + persons_str + "."
-    + " Regeln: Keine Logos, kein Schwarz, KEINE Schuhe."
-    + " Fuer Oberteile und Hosen jeweils 3 Varianten (Option 1/2/3) mit je 2-4 deutschen searchTerms, immer einen Farbbegriff aus der Palette einschliessen."
-    + " Antworte NUR mit JSON ohne Text oder Codeblock: " + exampleJson;
+  var personsStr = persons.map(function(p) { return p.type+"("+p.size+")"; }).join(", ");
+
+  // Palette-specific search color map for precise shop results
+  var colorMap = {
+    "creme-leinen":  { top: "creme",    bottom: "beige",    dress: "leinenkleid creme" },
+    "rost-erde":     { top: "cognac",   bottom: "camel",    dress: "kleid rost" },
+    "rosa-mauve":    { top: "altrosa",  bottom: "nude",     dress: "kleid puder" },
+    "salbei-stein":  { top: "salbei",   bottom: "khaki",    dress: "kleid salbei" },
+    "weiss-blau":    { top: "weiss",    bottom: "hellblau", dress: "kleid weiss" }
+  };
+  var cm = colorMap[pal.id] || { top: colors.split(",")[0], bottom: colors.split(",")[1]||colors.split(",")[0], dress: "kleid "+colors.split(",")[0] };
+
+  var example = '{"outfits":[{"person":"Mama","size":"M","items":[{"type":"Kleid","label":"Leinenkleid fliessend","search":"leinenkleid creme damen","priceApprox":"55"},{"type":"Oberteil","label":"Bluse leicht","search":"bluse creme damen","priceApprox":"30"}]}],"tips":["Tipp 1","Tipp 2"]}';
+
+  return "Outfit-Berater fuer Familien-Fotoshootings."
+    + " Palette: "+pal.name+" (Farben: "+colors+")."
+    + " Stil: "+styleHint
+    + " Budget: bis "+selectedBudget+" Euro. Personen: "+personsStr+"."
+    + " KEIN Schwarz, keine Logos, KEINE Schuhe."
+    + " Fuer jede Person: 2-3 aufeinander abgestimmte Teile."
+    + " Feld 'search': EIN praeziser deutscher Suchbegriff (3-5 Woerter) der in Zalando direkt Treffer liefert."
+    + " Farbbegriffe aus Palette in 'search' einbauen: top="+cm.top+", bottom="+cm.bottom+", dress="+cm.dress+"."
+    + " Gute Beispiele: 'leinenkleid creme damen', 'cord hose beige damen', 'strickpullover karamell'."
+    + " Antworte NUR mit JSON: "+example;
 }
 
 
@@ -642,7 +653,7 @@ function renderResults(data) {
         var opt = allOpts[k];
         var shopKey = SHOP_KEYS[k % SHOP_KEYS.length];
         var optShop = SHOPS[shopKey];
-        var terms = Array.isArray(opt.searchTerms) ? opt.searchTerms.join(" ") : (opt.label || opt.type);
+        var terms = opt.search || (Array.isArray(opt.searchTerms) ? opt.searchTerms.join(" ") : (opt.label || opt.type));
         var url = optShop.url(terms, gender);
         if (k > 0) linksHtml += " &nbsp;·&nbsp; ";
         linksHtml += "<a href='" + url + "' target='_blank' rel='noopener'>" + optShop.name + " ↗</a>";
