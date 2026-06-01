@@ -265,30 +265,25 @@ header { background: var(--beige-light); padding: 44px 40px 0; display: flex; fl
 
 <script>
 var PALETTES = [
-  { id: "natural-cream",   name: "Natural Cream",    sub: "Creme · Elfenbein · Sand · helles Beige",  desc: "Clean, hell, weich – ideal für Babybauch & Newborn", colors: ["#F7F1E7","#EDE2D2","#D8C4AA","#CBB79E","#BFA78B"], keywords: ["creme","elfenbein","sand","beige","hafer","hell","natur","weiß"] },
-  { id: "warm-earth",      name: "Warm Earth",       sub: "Karamell · Cognac · Rost · Schoko",        desc: "Warm, emotional, herbstlich – Outdoor & Familien",   colors: ["#D8B083","#B8774A","#A65332","#7B4A32","#4A3128"], keywords: ["karamell","cognac","rost","braun","schoko","terracotta","erdfarben"] },
-  { id: "soft-blush",      name: "Soft Blush",       sub: "Nude · Puder · Altrosa · Mauve",           desc: "Feminin, zart, elegant – Babybauch & Studio",       colors: ["#E8D3C6","#DDB7A8","#C99688","#A87976","#7C565B"], keywords: ["nude","puder","altrosa","rose","mauve","lachs","puderrosa","blush"] },
-  { id: "boho-neutral",    name: "Boho Neutral",     sub: "Creme · Leinen · Taupe · Greige",          desc: "Ruhig, natürlich, hochwertig – Hauptpalette",       colors: ["#F4EDE4","#DED0BE","#C1AC96","#9D8977","#7A6250"], keywords: ["creme","leinen","taupe","greige","hellbraun","natur","beige","sandton"] },
-  { id: "sage-stone",      name: "Sage & Stone",     sub: "Salbei · Olivgrau · Steingrau · Creme",    desc: "Ruhig, erdig – schön für Familien & Papas",         colors: ["#C8C9B4","#9FA186","#7B7C6A","#EAE1D2","#4F563F"], keywords: ["salbei","olive","olivgrau","steingrau","moosgrün","sage","khaki"] },
-  { id: "soft-blue-sand",  name: "Soft Blue & Sand", sub: "Staubblau · Greige · Creme · Beige",       desc: "Frisch & ruhig – wenn Blau dabei sein soll",        colors: ["#B8C5C8","#8FA4AD","#C7B9A6","#EFE6D8","#D2B896"], keywords: ["blau","staubblau","jeansblau","hellblau","greige","creme","sand"] }
+  { id: "creme-leinen",  name: "Creme & Leinen",  sub: "Gebrochenes Weiß · Creme · Sand · Leinen · Taupe",   desc: "Zeitlos, clean, boho-nah – Studio, Newborn, Babybauch", colors: ["#F7F1E7","#EDE2D2","#D8C4AA","#C1AC96","#9D8977"], keywords: ["creme","leinen","sand","taupe","elfenbein","beige","natur","off-white","hell"] },
+  { id: "rost-erde",     name: "Rost & Erde",     sub: "Karamell · Cognac · Rost · Braun · Schoko",          desc: "Herbstlich, emotional – Outdoor & Familien",            colors: ["#D8B083","#B8774A","#A65332","#7B4A32","#4A3128"], keywords: ["karamell","cognac","rost","braun","schoko","terracotta","erdfarben","kupfer"] },
+  { id: "rosa-mauve",    name: "Rosa & Mauve",    sub: "Nude · Puder · Altrosa · Rosébeige · Mauve",         desc: "Feminin, zart, elegant – Babybauch & Mommy and Me",     colors: ["#F0DDD4","#DDB7A8","#C99688","#A87976","#7C565B"], keywords: ["nude","puder","altrosa","rose","mauve","lachs","puderrosa","blush","rosé"] },
+  { id: "salbei-stein",  name: "Salbei & Stein",  sub: "Salbei · Olivgrau · Steingrau · Creme · Moosgrün",   desc: "Natürlich, erdig – Familien, Papas, Outdoor",           colors: ["#C8C9B4","#9FA186","#7B7C6A","#EAE1D2","#4F563F"], keywords: ["salbei","olive","olivgrau","steingrau","moosgrün","sage","khaki","waldgrün"] },
+  { id: "weiss-blau",    name: "Weiß & Blau",     sub: "Reinweiß · Hellblau · Jeansblau · Hellgrau · Eisblau", desc: "Frisch, kontrastreich – weiße Shirts, Jeans, moderne Looks", colors: ["#FFFFFF","#C8D8E8","#7FA4C0","#B0B8C0","#E8EEF2"], keywords: ["weiß","hellblau","jeansblau","blau","hellgrau","eisblau","denim","clean","frisch"] }
 ];
 
 var STYLES = [
-  { id: "clean-elegant",     name: "Clean & Elegant",            desc: "Zeitlos, edel, ruhige Linien" },
-  { id: "boho-natural",      name: "Boho & Natürlich",           desc: "Fließend, verspielt, naturnah" },
-  { id: "romantic-feminine", name: "Romantisch & Feminin",       desc: "Zart, weich, ausdrucksstark" },
-  { id: "earth-outdoor",     name: "Erdtöne & Outdoor",          desc: "Warm, emotional, herbstlich" },
-  { id: "baby-kids",         name: "Baby & Kinder",              desc: "Weich, niedlich, unbeschwert" },
-  { id: "family",            name: "Looks für die ganze Familie",desc: "Abgestimmt & harmonisch" }
+  { id: "bright-timeless",   name: "Hell & Zeitlos",             desc: "Studio, Newborn, Babybauch" },
+  { id: "warm-natural",      name: "Warm & Natürlich",           desc: "Outdoor, Herbst, Familien" },
+  { id: "feminine-romantic", name: "Feminin & Romantisch",       desc: "Babybauch, Mommy & Me, Studio" },
+  { id: "family-harmony",    name: "Familien-Outfit",            desc: "Alle harmonisch aufeinander abgestimmt" }
 ];
 
 var STYLE_SVGS = {
-  "clean-elegant":     "<svg viewBox='0 0 36 36' xmlns='http://www.w3.org/2000/svg'><path d='M13 4 Q18 2 23 4 L25 12 Q22 11 18 11 Q14 11 11 12 Z'/><path d='M11 12 Q7 18 6 28 Q10 30 18 30 Q26 30 30 28 Q29 18 25 12'/><path d='M14 11 Q18 14 22 11'/></svg>",
-  "boho-natural":      "<svg viewBox='0 0 36 36' xmlns='http://www.w3.org/2000/svg'><path d='M18 32 Q10 24 10 16 Q10 8 18 6 Q26 8 26 16 Q26 24 18 32Z'/><line x1='18' y1='32' x2='18' y2='6'/><path d='M18 22 Q13 20 11 15'/><path d='M18 16 Q23 14 25 10'/></svg>",
-  "romantic-feminine": "<svg viewBox='0 0 36 36' xmlns='http://www.w3.org/2000/svg'><path d='M18 30 Q10 26 9 18 Q8 10 18 8 Q28 10 27 18 Q26 26 18 30Z'/><path d='M18 8 Q15 3 11 4 Q9 8 12 13'/><path d='M18 8 Q21 3 25 4 Q27 8 24 13'/><line x1='18' y1='30' x2='18' y2='34'/></svg>",
-  "earth-outdoor":     "<svg viewBox='0 0 36 36' xmlns='http://www.w3.org/2000/svg'><polyline points='3,29 12,13 18,21 23,14 33,29'/><line x1='2' y1='29' x2='34' y2='29'/><circle cx='28' cy='10' r='4' fill='none'/><line x1='28' y1='5' x2='28' y2='2'/><line x1='33' y1='7' x2='35' y2='5'/></svg>",
-  "baby-kids":         "<svg viewBox='0 0 36 36' xmlns='http://www.w3.org/2000/svg'><circle cx='18' cy='10' r='5'/><path d='M8 30 Q8 22 18 22 Q28 22 28 30'/><path d='M10 18 Q7 19 6.5 22'/><path d='M26 18 Q29 19 29.5 22'/></svg>",
-  "family":            "<svg viewBox='0 0 36 36' xmlns='http://www.w3.org/2000/svg'><circle cx='10' cy='8' r='3'/><line x1='10' y1='11' x2='10' y2='20'/><line x1='6' y1='15' x2='14' y2='15'/><line x1='10' y1='20' x2='7' y2='28'/><line x1='10' y1='20' x2='13' y2='28'/><circle cx='26' cy='8' r='3'/><line x1='26' y1='11' x2='26' y2='20'/><line x1='22' y1='15' x2='30' y2='15'/><line x1='26' y1='20' x2='23' y2='28'/><line x1='26' y1='20' x2='29' y2='28'/><circle cx='18' cy='13' r='2.2'/><line x1='18' y1='15.2' x2='18' y2='22'/><line x1='15' y1='18' x2='21' y2='18'/><line x1='18' y1='22' x2='16' y2='27'/><line x1='18' y1='22' x2='20' y2='27'/></svg>"
+  "bright-timeless":   "<svg viewBox='0 0 36 36' xmlns='http://www.w3.org/2000/svg'><path d='M13 4 Q18 2 23 4 L25 12 Q22 11 18 11 Q14 11 11 12 Z'/><path d='M11 12 Q7 18 6 28 Q10 30 18 30 Q26 30 30 28 Q29 18 25 12'/><path d='M14 11 Q18 14 22 11'/></svg>",
+  "warm-natural":      "<svg viewBox='0 0 36 36' xmlns='http://www.w3.org/2000/svg'><path d='M18 32 Q10 24 10 16 Q10 8 18 6 Q26 8 26 16 Q26 24 18 32Z'/><line x1='18' y1='32' x2='18' y2='6'/><path d='M18 22 Q13 20 11 15'/><path d='M18 16 Q23 14 25 10'/></svg>",
+  "feminine-romantic": "<svg viewBox='0 0 36 36' xmlns='http://www.w3.org/2000/svg'><path d='M18 30 Q10 26 9 18 Q8 10 18 8 Q28 10 27 18 Q26 26 18 30Z'/><path d='M18 8 Q15 3 11 4 Q9 8 12 13'/><path d='M18 8 Q21 3 25 4 Q27 8 24 13'/><line x1='18' y1='30' x2='18' y2='34'/></svg>",
+  "family-harmony":    "<svg viewBox='0 0 36 36' xmlns='http://www.w3.org/2000/svg'><circle cx='10' cy='8' r='3'/><line x1='10' y1='11' x2='10' y2='20'/><line x1='6' y1='15' x2='14' y2='15'/><line x1='10' y1='20' x2='7' y2='28'/><line x1='10' y1='20' x2='13' y2='28'/><circle cx='26' cy='8' r='3'/><line x1='26' y1='11' x2='26' y2='20'/><line x1='22' y1='15' x2='30' y2='15'/><line x1='26' y1='20' x2='23' y2='28'/><line x1='26' y1='20' x2='29' y2='28'/><circle cx='18' cy='13' r='2.2'/><line x1='18' y1='15.2' x2='18' y2='22'/><line x1='15' y1='18' x2='21' y2='18'/><line x1='18' y1='22' x2='16' y2='27'/><line x1='18' y1='22' x2='20' y2='27'/></svg>"
 };
 
 var PERSON_SIZES = {
@@ -301,10 +296,19 @@ var PERSON_SIZES = {
 var PERSON_ICONS = { "Mama":"👩","Papa":"👨","Kind":"🧒","Schwanger":"🤰","Baby":"👶" };
 
 var SHOPS = {
-  zalando: { name: "Zalando", url: function(t,g) { return "https://www.zalando.de/"+(g==="male"?"herren":g==="kids"?"kinder":"damen")+"/?q="+encodeURIComponent(t); } },
-  hm:      { name: "H&M",     url: function(t,g) { return "https://www2.hm.com/de_de/search-results.html?q="+encodeURIComponent(t); } },
-  zara:    { name: "Zara",    url: function(t,g) { return "https://www.zara.com/de/de/search?searchTerm="+encodeURIComponent(t); } },
-  mango:   { name: "Mango",   url: function(t,g) { return "https://shop.mango.com/de/suche?q="+encodeURIComponent(t); } }
+  zalando: { name: "Zalando", url: function(t,g,colors) {
+    var base = "https://www.zalando.de/"+(g==="male"?"herren":g==="kids"?"kinder":"damen")+"/?q="+encodeURIComponent(t);
+    return base;
+  }},
+  hm:      { name: "H&M",    url: function(t,g,colors) {
+    return "https://www2.hm.com/de_de/search-results.html?q="+encodeURIComponent(t);
+  }},
+  zara:    { name: "Zara",   url: function(t,g,colors) {
+    return "https://www.zara.com/de/de/search?searchTerm="+encodeURIComponent(t);
+  }},
+  mango:   { name: "Mango",  url: function(t,g,colors) {
+    return "https://shop.mango.com/de/suche?q="+encodeURIComponent(t);
+  }}
 };
 var SHOP_KEYS = ["zalando","hm","zara","mango"];
 
@@ -500,19 +504,26 @@ async function startOnlineSearch() {
 }
 
 function buildPrompt() {
-  var pal = selectedPalette.name + " (" + selectedPalette.keywords.slice(0,4).join(", ") + ")";
+  var pal = selectedPalette;
+  var palDesc = pal.name + " (" + pal.keywords.slice(0,5).join(", ") + ")";
+  var colorHints = pal.keywords.slice(0,3).join(", ");
   var persons_str = persons.map(function(p) { return p.type + " Groesse " + p.size; }).join(", ");
-  return "Du bist Outfit-Berater fuer Foto-Shootings mit Familien. Erstelle fuer jede Person einen Outfit-Vorschlag."
-    + "\n\nFarbpalette: " + pal
-    + "\nStil: " + selectedStyle.name
-    + "\nBudget pro Person: bis " + selectedBudget + " Euro"
-    + "\nPersonen: " + persons_str
-    + "\n\nRegeln: Keine Logos, kein reines Schwarz, harmonisch abgestimmt, leichte Stoffe, Farben aus der Palette."
-    + "\nKEINE Schuhe vorschlagen."
-    + "\nFuer Oberteile und Hosen/Roecke jeweils drei Varianten als separate Items angeben (Option 1, Option 2, Option 3) mit leicht unterschiedlichen searchTerms."
-    + "\nFuer jedes Teil: searchTerms als Array mit 2-4 deutschen Suchbegriffen (keine Markennamen)."
-    + "\n\nAntworte NUR mit JSON, kein Text, keine Codeblock-Marker:"
-    + '\n{"outfits":[{"person":"Mama","size":"M","items":[{"type":"Kleid Option 1","label":"Fliessendes Leinenkleid","searchTerms":["leinenkleid","creme"],"priceApprox":"49"},{"type":"Kleid Option 2","label":"Midi-Kleid Beige","searchTerms":["midi kleid","beige"],"priceApprox":"55"},{"type":"Kleid Option 3","label":"Maxikleid Natur","searchTerms":["maxikleid","natur","leinen"],"priceApprox":"59"}]}],"tips":["Tipp 1","Tipp 2","Tipp 3"]}';
+  var styleGuide = {
+    "bright-timeless":   "Helle, klare Farben. Fliessende zeitlose Schnitte. Leinen, Viskose, Baumwolle. Keine Muster.",
+    "warm-natural":      "Warme Erdtoene. Natuerliche Materialien, Cord, Strick. Laessig aber stimmungsvoll.",
+    "feminine-romantic": "Zarte Farben. Wickelschnitte, Rueschen, weiche Draperien. Feminin und elegant.",
+    "family-harmony":    "Alle Personen aufeinander abstimmen. Gleiche Farbpalette, variierende Saettigungen."
+  };
+  var styleHint = styleGuide[selectedStyle.id] || selectedStyle.name;
+  var exampleJson = '{"outfits":[{"person":"Mama","size":"M","items":[{"type":"Kleid Option 1","label":"Fliessendes Leinenkleid","searchTerms":["leinenkleid","creme"],"priceApprox":"49"},{"type":"Kleid Option 2","label":"Midi-Kleid","searchTerms":["midi kleid","sand"],"priceApprox":"55"},{"type":"Kleid Option 3","label":"Maxikleid","searchTerms":["maxikleid","leinen","natur"],"priceApprox":"59"}]}],"tips":["Tipp 1","Tipp 2","Tipp 3"]}';
+  return "Du bist Outfit-Berater fuer Foto-Shootings mit Familien. Erstelle fuer jede Person einen Vorschlag."
+    + " Farbpalette: " + palDesc + "."
+    + " Farbbegriffe fuer searchTerms: " + colorHints + "."
+    + " Stil: " + styleHint
+    + " Budget: bis " + selectedBudget + " Euro. Personen: " + persons_str + "."
+    + " Regeln: Keine Logos, kein Schwarz, KEINE Schuhe."
+    + " Fuer Oberteile und Hosen jeweils 3 Varianten (Option 1/2/3) mit je 2-4 deutschen searchTerms, immer einen Farbbegriff aus der Palette einschliessen."
+    + " Antworte NUR mit JSON ohne Text oder Codeblock: " + exampleJson;
 }
 
 
