@@ -26,7 +26,7 @@
 body { font-family: 'Jost', sans-serif; font-weight: 300; background: var(--beige-light); color: var(--text); min-height: 100vh; line-height: 1.75; font-size: 18px; }
 
 header { background: var(--beige-light); padding: 44px 40px 0; display: flex; flex-direction: column; align-items: center; }
-.logo-img { height: 52px; width: auto; display: block; opacity: 0.9; }
+.logo-img { height: 104px; width: auto; display: block; opacity: 0.9; }
 .header-divider { width: 1px; height: 36px; background: var(--border); margin: 20px auto 0; }
 
 .container { max-width: 760px; margin: 0 auto; padding: 40px 24px 100px; }
@@ -205,8 +205,8 @@ body { font-size: 18px; }
     <div class="intro">
       <div class="intro-tag">Outfit-Beratung</div>
       <h2>Findet eure<br>perfekten Shooting-Outfits</h2>
-      <p>Nicht immer werden alle Shooting-Teilnehmer in meinem <a href="https://www.anneguenst.de/kleiderschrank" target="_blank" rel="noopener">Kleiderschrank</a> fündig – damit ich euch bei der Suche nach dem perfekten Outfit nicht allein lasse, habe ich diesen Finder entwickelt.</p>
-      <p>Gebt eure Wünsche ein und erhaltet passende Empfehlungen aus deutschen Online-Shops. Ihr könnt die Kleidung dort direkt erwerben – oder mich vorab kontaktieren: Ich helfe gerne dabei, passende Stücke zu organisieren, auch wenn sie noch nicht in meinem Kleiderschrank zu finden sind.</p>
+      <p>Nicht immer werden alle Shooting-Teilnehmer in meinem <a href="https://www.anneguenst.de/kleiderschrank" target="_blank" rel="noopener">Kleiderschrank</a> fündig. Damit ich euch bei der Suche nach dem perfekten Outfit nicht allein lasse, habe ich diesen Finder entwickelt.</p>
+      <p>Gebt eure Wünsche ein und erhaltet passende Empfehlungen aus deutschen Online-Shops. Ihr könnt die Kleidung dort direkt erwerben oder mich vorab kontaktieren. Ich helfe gerne dabei, passende Stücke zu organisieren, auch wenn sie noch nicht in meinem Kleiderschrank zu finden sind.</p>
     </div>
 
     <div class="step-block">
@@ -271,7 +271,7 @@ body { font-size: 18px; }
     <div class="results-header">
       <h2>Eure Outfit-Empfehlungen</h2>
       <p>Abgestimmt auf eure Farbpalette und euren Stil</p>
-      <p class="results-hint">Die Suche liefert nicht immer exakte Treffer – die Links führen euch in die richtige Richtung und helfen euch, passende Outfits zu entdecken.</p>
+      <p class="results-hint">Die Suche liefert nicht immer exakte Treffer. Die Links führen euch in die richtige Richtung und helfen euch, passende Outfits zu entdecken.</p>
     </div>
     <div id="wardrobe-section" style="display:none;"></div>
     <div id="online-section">
@@ -334,10 +334,13 @@ var SHOPS = {
   zalando: { name: "Zalando", url: function(t,g) {
     return "https://www.zalando.de/"+(g==="male"?"herren":g==="kids"?"kinder":"damen")+"/?q="+encodeURIComponent(t);
   }},
-  zara:  { name: "Zara",  url: function(t,g) { return "https://www.zara.com/de/de/search?searchTerm="+encodeURIComponent(t); }},
+  zara:  { name: "Zara",  url: function(t,g) {
+    var section = g==="male" ? "&section=man" : g==="kids" ? "&section=kids" : "&section=woman";
+    return "https://www.zara.com/de/de/search?searchTerm="+encodeURIComponent(t)+section;
+  }},
   asos:  { name: "ASOS",  url: function(t,g) {
-    var refine = g==="male" ? "&refine=attribute_10992=4294967294" : g==="kids" ? "&refine=attribute_10992=4294967268" : "&refine=attribute_10992=4294967278";
-    return "https://www.asos.com/de/suche/?q="+encodeURIComponent(t)+refine;
+    var gender = g==="male" ? "men" : g==="kids" ? "kids" : "women";
+    return "https://www.asos.com/"+gender+"/search/?q="+encodeURIComponent(t);
   }},
   nakd:  { name: "NA-KD", url: function(t,g) { return "https://www.na-kd.com/de/search?q="+encodeURIComponent(t); }}
 };
