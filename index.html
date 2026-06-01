@@ -25,8 +25,8 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'Jost', sans-serif; font-weight: 300; background: var(--beige-light); color: var(--text); min-height: 100vh; line-height: 1.75; font-size: 18px; }
 
-.hero-image { width: 100%; display: flex; justify-content: center; padding: 0 24px; box-sizing: border-box; }
-.hero-image img { width: 100%; max-width: 900px; height: auto; display: block; }
+.hero-image { width: 100%; }
+.hero-image img { width: 100%; height: auto; display: block; border-radius: var(--radius); }
 header { background: var(--beige-light); padding: 44px 40px 0; display: flex; flex-direction: column; align-items: center; }
 .logo-img { height: 104px; width: auto; display: block; opacity: 0.9; }
 .header-divider { width: 1px; height: 36px; background: var(--border); margin: 20px auto 0; }
@@ -39,7 +39,7 @@ header { background: var(--beige-light); padding: 44px 40px 0; display: flex; fl
 .intro { text-align: center; margin-bottom: 56px; padding-bottom: 40px; border-bottom: 1px solid var(--border); }
 .intro-tag { display: inline-block; background: var(--beige-warm); color: var(--brown); font-size: 0.88rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 7px 18px; border-radius: 20px; margin-bottom: 20px; }
 .intro h2 { font-family: 'Fraunces', serif; font-weight: 400; font-size: 3rem; line-height: 1.2; color: var(--text); margin-bottom: 16px; letter-spacing: -0.01em; }
-.intro p { color: var(--text-muted); font-size: 1.08rem; max-width: 580px; margin: 0 auto 12px; }
+.intro p { color: var(--text-muted); font-size: 1.08rem; max-width: 100%; margin: 0 auto 12px; }
 .intro p:last-child { margin-bottom: 0; }
 .intro a { color: var(--brown); text-decoration: underline; text-underline-offset: 3px; }
 .intro a:hover { opacity: 0.75; }
@@ -201,10 +201,6 @@ body { font-size: 18px; }
   <div class="header-divider"></div>
 </header>
 
-<div class="hero-image">
-  <img src="https://images.squarespace-cdn.com/content/5c2e0c9a12b13fcbf149aa2c/1398ab41-80ee-4130-bd8b-4a39b84d10b2/Outfitfinder.png?content-type=image%2Fpng" alt="Outfit-Finder Anne Günst Fotografie">
-</div>
-
 <div class="page active" id="page-input">
   <div class="container">
 
@@ -213,6 +209,10 @@ body { font-size: 18px; }
       <h2>Findet eure<br>perfekten Shooting-Outfits</h2>
       <p>Nicht immer werden alle Shooting-Teilnehmer in meinem <a href="https://www.anneguenst.de/kleiderschrank" target="_blank" rel="noopener">Kleiderschrank</a> fündig. Damit ich euch bei der Suche nach dem perfekten Outfit nicht allein lasse, habe ich diesen Finder entwickelt.</p>
       <p>Gebt eure Wünsche ein und erhaltet passende Empfehlungen aus deutschen Online-Shops. Ihr könnt die Kleidung dort direkt erwerben oder mich vorab kontaktieren. Ich helfe gerne dabei, passende Stücke zu organisieren, auch wenn sie noch nicht in meinem Kleiderschrank zu finden sind.</p>
+    </div>
+
+    <div class="hero-image" style="margin-bottom: 40px;">
+      <img src="https://images.squarespace-cdn.com/content/5c2e0c9a12b13fcbf149aa2c/1398ab41-80ee-4130-bd8b-4a39b84d10b2/Outfitfinder.png?content-type=image%2Fpng" alt="Outfit-Finder Anne Günst Fotografie">
     </div>
 
     <div class="step-block">
