@@ -332,17 +332,22 @@ var PERSON_ICONS = { "Mama":"👩","Papa":"👨","Kind":"🧒","Schwanger":"🤰
 
 var SHOPS = {
   zalando: { name: "Zalando", url: function(t,g) {
-    return "https://www.zalando.de/"+(g==="male"?"herren":g==="kids"?"kinder":"damen")+"/?q="+encodeURIComponent(t);
+    // Zalando: search with no-print filter for kids
+    var base = "https://www.zalando.de/"+(g==="male"?"herren":g==="kids"?"kinder":"damen")+"/?q="+encodeURIComponent(t);
+    return base;
   }},
   zara: { name: "Zara", url: function(t,g) {
-    var sec = g==="male" ? "&section=man" : g==="kids" ? "&section=kids" : "&section=woman";
-    return "https://www.zara.com/de/de/search?searchTerm="+encodeURIComponent(t)+sec;
+    // Zara: use category pages for reliable results
+    if (g === "kids") return "https://www.zara.com/de/de/kids-mkt1.html";
+    if (g === "male") return "https://www.zara.com/de/de/search?searchTerm="+encodeURIComponent(t)+"&section=man";
+    return "https://www.zara.com/de/de/search?searchTerm="+encodeURIComponent(t)+"&section=woman";
   }},
-  nakd: { name: "NA-KD", url: function(t,g) {
-    return "https://www.na-kd.com/de/search?q="+encodeURIComponent(t);
+  edited: { name: "EDITED", url: function(t,g) {
+    if (g === "kids" || g === "male") return "https://www.edited.de/damen/?q="+encodeURIComponent(t);
+    return "https://www.edited.de/damen/?q="+encodeURIComponent(t);
   }}
 };
-var SHOP_KEYS = ["zalando","zara","nakd"];
+var SHOP_KEYS = ["zalando","zara","edited"];
 
 var selectedPalette = null;
 var selectedStyle = null;
