@@ -100,6 +100,7 @@ header { background: var(--beige-light); padding: 44px 40px 0; display: flex; fl
 .results-header { text-align: center; margin-bottom: 48px; }
 .results-header h2 { font-family: 'Fraunces', serif; font-weight: 400; font-size: 2rem; margin-bottom: 8px; }
 .results-header p { color: var(--text-muted); font-size: 0.9rem; }
+.results-hint { font-size: 0.78rem !important; color: var(--text-muted); background: var(--beige-warm); border-radius: 8px; padding: 10px 16px; display: inline-block; margin-top: 10px; font-style: italic; }
 .section-heading { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; }
 .section-heading h3 { font-family: 'Fraunces', serif; font-weight: 400; font-size: 1.3rem; white-space: nowrap; }
 .section-heading .line { flex: 1; height: 1px; background: var(--border); }
@@ -237,6 +238,7 @@ header { background: var(--beige-light); padding: 44px 40px 0; display: flex; fl
     <div class="results-header">
       <h2>Eure Outfit-Empfehlungen</h2>
       <p>Abgestimmt auf eure Farbpalette und euren Stil</p>
+      <p class="results-hint">Die Suche liefert nicht immer exakte Treffer – die Links führen euch in die richtige Richtung und helfen euch, passende Outfits zu entdecken.</p>
     </div>
     <div id="wardrobe-section" style="display:none;"></div>
     <div id="online-section">
@@ -296,19 +298,30 @@ var PERSON_SIZES = {
 var PERSON_ICONS = { "Mama":"👩","Papa":"👨","Kind":"🧒","Schwanger":"🤰","Baby":"👶" };
 
 var SHOPS = {
-  zalando: { name: "Zalando", url: function(t,g,colors) {
-    var base = "https://www.zalando.de/"+(g==="male"?"herren":g==="kids"?"kinder":"damen")+"/?q="+encodeURIComponent(t);
-    return base;
+  zalando: { name: "Zalando", url: function(t,g) {
+    return "https://www.zalando.de/"+(g==="male"?"herren":g==="kids"?"kinder":"damen")+"/?q="+encodeURIComponent(t);
   }},
-  hm:      { name: "H&M",    url: function(t,g,colors) {
-    return "https://www2.hm.com/de_de/search-results.html?q="+encodeURIComponent(t);
+  hm: { name: "H&M", url: function(t,g) {
+    // H&M category routing based on keyword matching
+    var tl = t.toLowerCase();
+    var base = "https://www2.hm.com/de_de/";
+    var cat = g==="male" ? "herren" : g==="kids" ? "kinder" : "damen";
+    if (tl.indexOf("kleid") > -1 || tl.indexOf("rock") > -1)
+      return base+cat+"/produkte/kleider.html";
+    if (tl.indexOf("hose") > -1 || tl.indexOf("jeans") > -1)
+      return base+cat+"/produkte/hosen.html";
+    if (tl.indexOf("pullover") > -1 || tl.indexOf("strick") > -1)
+      return base+cat+"/produkte/pullover-strickjacken.html";
+    if (tl.indexOf("bluse") > -1 || tl.indexOf("oberteil") > -1 || tl.indexOf("shirt") > -1 || tl.indexOf("top") > -1)
+      return base+cat+"/produkte/blusen-hemden.html";
+    if (tl.indexOf("jacke") > -1 || tl.indexOf("mantel") > -1)
+      return base+cat+"/produkte/jacken-maentel.html";
+    if (tl.indexOf("overall") > -1 || tl.indexOf("strampler") > -1)
+      return base+"kinder/baby/kleidung.html";
+    return base+cat+"/produkte.html";
   }},
-  zara:    { name: "Zara",   url: function(t,g,colors) {
-    return "https://www.zara.com/de/de/search?searchTerm="+encodeURIComponent(t);
-  }},
-  mango:   { name: "Mango",  url: function(t,g,colors) {
-    return "https://shop.mango.com/de/suche?q="+encodeURIComponent(t);
-  }}
+  zara:  { name: "Zara",  url: function(t,g) { return "https://www.zara.com/de/de/search?searchTerm="+encodeURIComponent(t); }},
+  mango: { name: "Mango", url: function(t,g) { return "https://shop.mango.com/de/suche?q="+encodeURIComponent(t); }}
 };
 var SHOP_KEYS = ["zalando","hm","zara","mango"];
 
